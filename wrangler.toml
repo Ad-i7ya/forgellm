@@ -24,7 +24,7 @@ assets = { directory = "./src", binding = "ASSETS" }
 # For production, use `wrangler secret put OLLAMA_HOST` or set via Cloudflare
 # Dashboard > Workers & Pages > forgellm > Variables.
 [vars]
-OLLAMA_HOST = "http://ollama.internal:11434"
+OLLAMA_HOST = "https://twelve-tmp-drinks-application.trycloudflare.com"
 
 # ─── Environments ──────────────────────────────────────────────────────────
 # You can add preview/production environments here.
