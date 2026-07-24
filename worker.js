@@ -45,8 +45,7 @@ export default {
     // ── API Routes → proxy to Ollama (server-side, may be restricted) ─────
     if (url.pathname.startsWith("/api/")) {
       const allowed = ["/api/chat", "/api/tags", "/api/models", "/api/generate"];
-      const isAllowed = allowed.some(p => url.pathname === p || url.pathname.startsWith(p + "/"));
-      if (!isAllowed) {
+      if (!allowed.includes(url.pathname)) {
         return new Response(JSON.stringify({ error: "Not found" }), {
           status: 404,
           headers: { "Content-Type": "application/json", ...corsHeaders() },
