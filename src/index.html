@@ -218,7 +218,7 @@
               <p class="mt-4 text-base leading-relaxed text-white/55">Install once and ForgeLM lives in your terminal. No accounts to create, no keys to paste.</p>
             </div>
             <ol class="mx-auto mt-14 max-w-2xl space-y-5">
-              <li class="flex gap-4" style="opacity:0;transform:translateY(16px)">
+              <li class="flex gap-4" data-animate="slide-up" style="opacity:0;transform:translateY(16px)">
                 <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-forest/30 bg-forest/10 font-mono text-xs text-forest-bright">1</span>
                 <div class="min-w-0 flex-1">
                   <p class="font-normal text-white/90">Install the CLI</p>
@@ -232,7 +232,7 @@
                   </div>
                 </div>
               </li>
-              <li class="flex gap-4" style="opacity:0;transform:translateY(16px)">
+              <li class="flex gap-4" data-animate="slide-up" style="opacity:0;transform:translateY(16px)">
                 <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-forest/30 bg-forest/10 font-mono text-xs text-forest-bright">2</span>
                 <div class="min-w-0 flex-1">
                   <p class="font-normal text-white/90">Open your project</p>
@@ -246,7 +246,7 @@
                   </div>
                 </div>
               </li>
-              <li class="flex gap-4" style="opacity:0;transform:translateY(16px)">
+              <li class="flex gap-4" data-animate="slide-up" style="opacity:0;transform:translateY(16px)">
                 <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-forest/30 bg-forest/10 font-mono text-xs text-forest-bright">3</span>
                 <div class="min-w-0 flex-1">
                   <p class="font-normal text-white/90">Start coding</p>
@@ -261,72 +261,6 @@
                 </div>
               </li>
             </ol>
-          </div>
-        </section>
-
-        <!-- ─── FAQS SECTION ─── -->
-        <section class="relative px-6 py-24 md:py-32">
-          <div class="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[0.8fr_1.4fr]">
-            <div class="lg:sticky lg:top-24 lg:self-start">
-              <h2 class="lp-feature-heading text-white text-[34px] leading-[1.1] md:text-[46px] font-normal">FAQs</h2>
-            </div>
-            <div class="divide-y divide-white/[0.08]">
-              <!-- FAQ 1 -->
-              <div class="faq-item">
-                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
-                  <span class="font-mono text-xs text-forest-bright">01</span>
-                  <span class="flex-1 font-normal transition-colors text-white">How can it be free?</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
-                </button>
-                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
-                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM is supported by text ads.</p>
-                </div>
-              </div>
-              <!-- FAQ 2 -->
-              <div class="faq-item">
-                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
-                  <span class="font-mono text-xs text-white/35">02</span>
-                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">What models do you use?</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
-                </button>
-                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
-                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM runs on your own Ollama models. Deploy DeepSeek V4, MiMo, MiniMax, or any open-source model on your VPS. You choose what runs and keep full control.</p>
-                </div>
-              </div>
-              <!-- FAQ 3 -->
-              <div class="faq-item">
-                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
-                  <span class="font-mono text-xs text-white/35">03</span>
-                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">What is the cloud setup?</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
-                </button>
-                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
-                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM uses Ollama on your VPS connected through a Cloudflare Tunnel. The web UI is served via Cloudflare Workers. Everything is self-hosted and private.</p>
-                </div>
-              </div>
-              <!-- FAQ 4 -->
-              <div class="faq-item">
-                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
-                  <span class="font-mono text-xs text-white/35">04</span>
-                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">Is my data private?</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
-                </button>
-                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
-                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">Yes. Since ForgeLM runs on your own Ollama instance, your code and conversations never leave your infrastructure. No third-party AI providers see your data.</p>
-                </div>
-              </div>
-              <!-- FAQ 5 -->
-              <div class="faq-item">
-                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
-                  <span class="font-mono text-xs text-white/35">05</span>
-                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">What else is cool in ForgeLM?</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
-                </button>
-                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
-                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM comes with 7 specialized tools: read_file, write_file, edit_file, run_command, list_files, web_search, and spawn_agent. It features streaming responses, model selection, conversation history, and keyboard shortcuts. For the web, you get settings, command palette (Ctrl+K), and theme toggle.</p>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 

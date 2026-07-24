@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+<meta name="theme-color" content="#0a0a0b"/>
+<title>ForgeLM Chat — free AI coding assistant</title>
+<meta name="description" content="Free AI chat using your own models. No login needed."/>
+<link rel="shortcut icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236363f1'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='18' fill='white' font-family='sans-serif' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E"/>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236363f1'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='18' fill='white' font-family='sans-serif' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E"/>
+<link rel="stylesheet" href="/styles.css"/>
+<style>
+/* Chat-specific styles */
+.chat-app { height: 100dvh; display: flex; flex-direction: column; background: #0a0a0b; }
+.chat-header { display: flex; align-items: center; justify-content: space-between; padding: 8px 16px; border-bottom: 1px solid rgba(255,255,255,0.06); background: #0c0c0f; flex-shrink: 0; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 16px; }
+.chat-input-area { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+.model-status { display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 6px; font-size: 12px; }
+.model-status-dot { width: 8px; height: 8px; border-radius: 50%; }
+.model-status-dot.connected { background: #54a967; }
+.model-status-dot.connecting { background: #eab308; }
+.model-status-dot.disconnected { background: #ef4444; }
+.msg { max-width: 80%; margin-bottom: 12px; padding: 10px 14px; border-radius: 14px; font-size: 13px; line-height: 1.6; }
+.msg.user { margin-left: auto; background: rgba(99,99,241,0.10); color: rgba(255,255,255,0.90); border-bottom-right-radius: 4px; }
+.msg.assistant { margin-right: auto; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); border-bottom-left-radius: 4px; }
+.msg-header { font-size: 11px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.msg-header .name { color: rgba(84,169,103,0.90); }
+.msg-header .sep { color: rgba(255,255,255,0.30); }
+.msg-header .model { color: rgba(255,255,255,0.40); }
+.chat-input-wrapper { display: flex; align-items: flex-end; gap: 8px; padding: 8px 12px; border: 1px solid rgba(255,255,255,0.10); border-radius: 14px; background: rgba(255,255,255,0.03); }
+.chat-input-wrapper textarea { flex: 1; background: transparent; border: none; outline: none; color: rgba(255,255,255,0.90); font-size: 13px; font-family: inherit; resize: none; min-height: 24px; max-height: 150px; line-height: 1.5; }
+.chat-input-wrapper textarea::placeholder { color: rgba(255,255,255,0.35); }
+.send-btn { width: 32px; height: 32px; border-radius: 8px; border: none; background: #6363f1; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; flex-shrink: 0; }
+.send-btn:disabled { opacity: 0.3; cursor: default; }
+.send-btn:hover:not(:disabled) { opacity: 0.85; }
+</style>
+</head>
+<body>
+<div id="chat-app" class="chat-app">
+  <!-- Header -->
+  <div class="chat-header">
+    <div class="flex items-center gap-3">
+      <a href="/" class="flex items-center gap-2 text-white/70 hover:text-white transition-colors">
+        <span class="flex h-7 w-7 items-center justify-center rounded-[5px] bg-[#6363f1] text-[12px] font-bold text-white">F</span>
+        <span class="text-[13px] font-medium">forgelm</span>
+      </a>
+      <span class="text-white/15">/</span>
+      <span class="text-[13px] text-white/55">Chat</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <!-- Model connection status -->
+      <div class="model-status">
+        <span id="chat-model-dot" class="model-status-dot connecting"></span>
+        <span id="chat-model-text" class="text-white/55">Connecting...</span>
+      </div>
+      <!-- Model selector -->
+      <select id="chat-model-select" class="bg-transparent text-[12px] text-white/55 border border-white/10 rounded-md px-2 py-1 outline-none hover:border-white/20">
+        <option value="">Loading models...</option>
+      </select>
+      <button id="new-chat-btn" class="text-white/40 hover:text-white transition-colors text-[12px] px-2 py-1 rounded-md hover:bg-white/5" title="New chat">+ New</button>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div id="chat-messages" class="chat-messages">
+    <div class="flex items-center justify-center h-full text-white/20 text-sm">Start a conversation</div>
+  </div>
+
+  <!-- Input Area -->
+  <div class="chat-input-area">
+    <div class="chat-input-wrapper">
+      <textarea id="chat-input" placeholder="Ask anything..." rows="1"></textarea>
+      <button id="send-btn" class="send-btn" disabled>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 7-7 7 7"/><path d="M12 19V5"/></svg>
+      </button>
+    </div>
+    <div class="flex items-center justify-between mt-2 px-1">
+      <span class="text-[11px] text-white/20">Ctrl+Enter to send · Esc to cancel</span>
+      <span id="chat-status-info" class="text-[11px] text-white/20"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  const dom = {
+    messages: document.getElementById('chat-messages'),
+    input: document.getElementById('chat-input'),
+    sendBtn: document.getElementById('send-btn'),
+    modelSelect: document.getElementById('chat-model-select'),
+    newChatBtn: document.getElementById('new-chat-btn'),
+    modelDot: document.getElementById('chat-model-dot'),
+    modelText: document.getElementById('chat-model-text'),
+    statusInfo: document.getElementById('chat-status-info'),
+  };
+
+  const state = {
+    streaming: false,
+    abortController: null,
+    ollamaHost: 'http://localhost:11434',
+    models: [],
+  };
+
+  // ─── Model Status ─────────────────────────────────────────────
+  function setModelStatus(status, text) {
+    dom.modelDot.className = 'model-status-dot ' + status;
+    dom.modelText.textContent = text || status;
+    if (dom.statusInfo) {
+      dom.statusInfo.textContent = text || '';
+    }
+  }
+
+  // ─── Config Loading ───────────────────────────────────────────
+  async function loadConfig() {
+    try {
+      const res = await fetch('/_config');
+      const data = await res.json();
+      if (data.ollamaHost) {
+        state.ollamaHost = data.ollamaHost;
+      }
+      return true;
+    } catch (e) {
+      console.log('No config, using default host');
+      return false;
+    }
+  }
+
+  // ─── Model Loading ────────────────────────────────────────────
+  async function loadModels() {
+    try {
+      setModelStatus('connecting', 'Connecting to Ollama...');
+      const url = state.ollamaHost + '/api/tags';
+      const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      state.models = data.models || [];
+
+      dom.modelSelect.innerHTML = state.models.map(m =>
+        '<option value="' + m.name + '">' + m.name + '</option>'
+      ).join('');
+
+      const preferred = state.models.find(m => m.name.includes('nemotron'));
+      if (preferred) dom.modelSelect.value = preferred.name;
+
+      setModelStatus('connected', state.models.length + ' models available');
+    } catch (e) {
+      setModelStatus('disconnected', 'Ollama offline');
+      dom.modelSelect.innerHTML = '<option value="">No models</option>';
+    }
+  }
+
+  // ─── Escape HTML ─────────────────────────────────────────────
+  function escapeHtml(text) {
+    var d = document.createElement('div');
+    d.textContent = text;
+    return d.innerHTML;
+  }
+
+  // ─── Format Message ──────────────────────────────────────────
+  function formatMessage(text) {
+    text = text.replace(/```(\w*)\n([\s\S]*?)```/g, function(_, lang, code) {
+      return '<div class="mt-2 rounded-lg border border-white/10 bg-black/40 p-3 font-mono text-[12px] text-white/60"><div class="text-[11px] text-white/30 mb-1">' + escapeHtml(lang || 'code') + '</div><pre>' + escapeHtml(code.trim()) + '</pre></div>';
+    });
+    text = text.replace(/`([^`]+)`/g, '<code class="bg-white/10 rounded px-1 text-[12px] font-mono">$1</code>');
+    text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    text = text.replace(/\n/g, '<br/>');
+    return text;
+  }
+
+  // ─── Add Message ─────────────────────────────────────────────
+  function addMessage(content, role, modelName) {
+    var empty = dom.messages.querySelector('.flex.items-center.justify-center');
+    if (empty) empty.remove();
+
+    var msg = document.createElement('div');
+    msg.className = 'msg ' + role;
+
+    if (role === 'assistant' && modelName) {
+      var hdr = document.createElement('div');
+      hdr.className = 'msg-header';
+      hdr.innerHTML = '<span class="name">ForgeLM</span><span class="sep">·</span><span class="model">' + escapeHtml(modelName) + '</span>';
+      msg.appendChild(hdr);
+    }
+
+    var contentDiv = document.createElement('div');
+    if (role === 'user') {
+      contentDiv.textContent = content;
+    } else {
+      contentDiv.innerHTML = formatMessage(content);
+    }
+    msg.appendChild(contentDiv);
+    dom.messages.appendChild(msg);
+    dom.messages.scrollTop = dom.messages.scrollHeight;
+  }
+
+  // ─── Send Message ────────────────────────────────────────────
+  async function sendMessage() {
+    if (!dom.input || state.streaming) return;
+    var text = dom.input.value.trim();
+    if (!text) return;
+
+    dom.input.value = '';
+    dom.input.style.height = 'auto';
+    dom.sendBtn.disabled = true;
+
+    addMessage(text, 'user');
+
+    var model = dom.modelSelect.value || 'nemotron-3-super';
+
+    state.abortController = new AbortController();
+    state.streaming = true;
+    dom.sendBtn.disabled = true;
+
+    var msgDiv = document.createElement('div');
+    msgDiv.className = 'msg assistant';
+
+    var hdr = document.createElement('div');
+    hdr.className = 'msg-header';
+    hdr.innerHTML = '<span class="name">ForgeLM</span><span class="sep">·</span><span class="model">' + escapeHtml(model) + '</span>';
+    msgDiv.appendChild(hdr);
+
+    var contentDiv = document.createElement('div');
+    msgDiv.appendChild(contentDiv);
+    dom.messages.appendChild(msgDiv);
+
+    var fullResponse = '';
+
+    try {
+      var url = state.ollamaHost + '/api/chat';
+      var res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ model: model, messages: [{ role: 'user', content: text }], stream: true }),
+        signal: state.abortController.signal
+      });
+
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+
+      var reader = res.body.getReader();
+      var decoder = new TextDecoder();
+      var buffer = '';
+
+      while (true) {
+        var result = await reader.read();
+        if (result.done) break;
+        buffer += decoder.decode(result.value, { stream: true });
+        var lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (var i = 0; i < lines.length; i++) {
+          var line = lines[i].trim();
+          if (!line) continue;
+          try {
+            var json = JSON.parse(line);
+            if (json.message && json.message.content) {
+              fullResponse += json.message.content;
+              contentDiv.innerHTML = formatMessage(fullResponse);
+              dom.messages.scrollTop = dom.messages.scrollHeight;
+            }
+          } catch (e) {}
+        }
+      }
+
+      if (buffer.trim()) {
+        try {
+          var json = JSON.parse(buffer);
+          if (json.message && json.message.content) {
+            fullResponse += json.message.content;
+            contentDiv.innerHTML = formatMessage(fullResponse);
+          }
+        } catch (e) {}
+      }
+    } catch (e) {
+      if (e.name !== 'AbortError') {
+        contentDiv.innerHTML = '<span style="color:#ef4444">Error: ' + escapeHtml(e.message) + '</span>';
+      }
+    } finally {
+      state.streaming = false;
+      state.abortController = null;
+      dom.sendBtn.disabled = true;
+      handleInput();
+    }
+  }
+
+  // ─── Input Handling ──────────────────────────────────────────
+  function handleInput() {
+    if (!dom.input || !dom.sendBtn) return;
+    var text = dom.input.value.trim();
+    dom.sendBtn.disabled = !text || state.streaming;
+    dom.input.style.height = 'auto';
+    dom.input.style.height = Math.min(dom.input.scrollHeight, 150) + 'px';
+  }
+
+  function handleKeydown(e) {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      sendMessage();
+    } else if (e.key === 'Escape' && state.streaming) {
+      if (state.abortController) state.abortController.abort();
+    }
+  }
+
+  function newChat() {
+    dom.messages.innerHTML = '';
+    var empty = document.createElement('div');
+    empty.className = 'flex items-center justify-center h-full text-white/20 text-sm';
+    empty.textContent = 'Start a conversation';
+    dom.messages.appendChild(empty);
+  }
+
+  // ─── Init ────────────────────────────────────────────────────
+  async function init() {
+    loadConfig().then(function() {
+      loadModels();
+      // Periodically check connection
+      setInterval(loadModels, 30000);
+    });
+
+    dom.sendBtn.addEventListener('click', sendMessage);
+    dom.input.addEventListener('input', handleInput);
+    dom.input.addEventListener('keydown', handleKeydown);
+    dom.newChatBtn.addEventListener('click', newChat);
+
+    document.addEventListener('keydown', function(e) {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'n' || e.key === 'N')) {
+        e.preventDefault();
+        newChat();
+      }
+    });
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>

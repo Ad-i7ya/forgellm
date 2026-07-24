@@ -47,10 +47,20 @@ export default {
       return handleApiRequest(request, url, env);
     }
 
-    // ── Non-API routes → handled by static assets ─────────────────────────
-    // Cloudflare serves static files from ./src/ automatically when
-    // assets are configured in wrangler.toml.
-    return env.ASSETS.fetch(request);
+    // ── Non-API routes → served as static HTML pages ────────────────────
+    switch (url.pathname) {
+      case "/cli":
+      case "/cli/":
+        return env.ASSETS.fetch(new Request(new URL(url.origin + "/index.html"), request));
+      case "/web":
+      case "/web/":
+        return env.ASSETS.fetch(new Request(new URL(url.origin + "/web.html"), request));
+      case "/chat":
+      case "/chat/":
+        return env.ASSETS.fetch(new Request(new URL(url.origin + "/chat.html"), request));
+      default:
+        return env.ASSETS.fetch(request);
+    }
   },
 };
 
