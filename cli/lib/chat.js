@@ -46,14 +46,18 @@ export async function fetchModels(host) {
   return data.models || [];
 }
 
-// ─── Send Chat Message (Streaming) ────────────────────────────────────────
+// ─── Send Chat Message (Streaming with Tool Support) ─────────────────────
 
-export async function* sendChatMessage(host, model, messages) {
-  const body = JSON.stringify({
+export async function* sendChatMessage(host, model, messages, tools = null) {
+  const payload = {
     model,
     messages,
     stream: true,
-  });
+  };
+  if (tools) {
+    payload.tools = tools;
+  }
+  const body = JSON.stringify(payload);
 
   const { response } = await httpRequestStreaming(
     host,

@@ -23,6 +23,7 @@
 
 import { createInterface } from "readline";
 import { loadConfig, sendChatMessage } from "../lib/chat.js";
+import { toolDefinitions, executeTool } from "../lib/tools.js";
 import chalk from "chalk";
 
 // ─── Parse CLI Arguments ─────────────────────────────────────────────────
@@ -232,34 +233,90 @@ ${chalk.gray("  ─────────────────────�
         process.stdout.write(chalk.gray("  ⚒️  Thinking..."));
 
         try {
-          // Stream the response
+          // Stream the response with tool support
           let fullResponse = "";
           let firstChunk = true;
+          let toolCalls = [];
 
           for await (const chunk of sendChatMessage(
             config.host,
             model,
-            messages
+            messages,
+            toolDefinitions
           )) {
             if (firstChunk) {
-              // Clear the "Thinking..." line
               process.stdout.clearLine(0);
               process.stdout.cursorTo(0);
               process.stdout.write(chalk.hex("#6363f1")("  ⚒️  ") + chalk.gray(""));
               firstChunk = false;
             }
-            fullResponse += chunk;
-            process.stdout.write(chunk);
+            // Check if this chunk contains a tool call
+            if (typeof chunk === "object" && chunk.tool_calls) {
+              toolCalls = chunk.tool_calls;
+            } else if (typeof chunk === "string") {
+              fullResponse += chunk;
+              process.stdout.write(chunk);
+            }
           }
 
-          process.stdout.write("\n\n");
-          messages.push({ role: "assistant", content: fullResponse });
+          // Handle tool calls
+          if (toolCalls.length > 0) {
+            process.stdout.write("\n");
+            messages.push({ role: "assistant", content: fullResponse });
+
+            for (const tc of toolCalls) {
+              const fn = tc.function;
+              const fnName = fn.name;
+              const fnArgs = JSON.parse(fn.arguments);
+
+              process.stdout.write(
+                chalk.gray(`  🔧 Running tool: ${fnName}...`)
+              );
+
+              const result = await executeTool(fnName, fnArgs);
+
+              process.stdout.clearLine(0);
+              process.stdout.cursorTo(0);
+
+              messages.push({
+                role: "tool",
+                content: JSON.stringify(result),
+                name: fnName,
+              });
+            }
+
+            // Get final response after tools
+            process.stdout.write(chalk.gray("  ⚒️  Processing results..."));
+            let finalResponse = "";
+            firstChunk = true;
+
+            for await (const chunk of sendChatMessage(
+              config.host,
+              model,
+              messages
+            )) {
+              if (firstChunk) {
+                process.stdout.clearLine(0);
+                process.stdout.cursorTo(0);
+                process.stdout.write(
+                  chalk.hex("#6363f1")("  ⚒️  ") + chalk.gray("")
+                );
+                firstChunk = false;
+              }
+              finalResponse += chunk;
+              process.stdout.write(chunk);
+            }
+
+            process.stdout.write("\n\n");
+            messages.push({ role: "assistant", content: finalResponse });
+          } else {
+            process.stdout.write("\n\n");
+            messages.push({ role: "assistant", content: fullResponse });
+          }
         } catch (err) {
           process.stdout.clearLine(0);
           process.stdout.cursorTo(0);
-          console.log(
-            chalk.red(`\n  ✗ Error: ${err.message}\n`)
-          );
+          console.log(chalk.red(`\n  ✗ Error: ${err.message}\n`));
         }
 
         chatLoop();
