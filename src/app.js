@@ -450,11 +450,41 @@ function scrollToBottom() {
   });
 }
 
+// ─── API Configuration ────────────────────────────────────────────────────
+// The frontend connects directly to Ollama (via trycloudflare tunnel)
+// from the browser, since the Worker can't reach the VPS directly.
+
+let API_BASE = "/api"; // fallback: use Worker's proxy
+
+async function loadConfig() {
+  try {
+    const res = await fetch("/_config");
+    if (res.ok) {
+      const config = await res.json();
+      if (config.ollamaHost && !config.ollamaHost.includes("localhost") && !config.ollamaHost.includes("internal")) {
+        API_BASE = config.ollamaHost + "/api";
+        console.log("Using Ollama via:", API_BASE);
+      }
+    }
+  } catch { /* use fallback */ }
+}
+
+async function apiFetch(path, options = {}) {
+  const url = API_BASE + path;
+  return fetch(url, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+  });
+}
+
 // ─── API Calls ─────────────────────────────────────────────────────────────
 
 async function fetchModels() {
   try {
-    const res = await fetch("/api/tags");
+    const res = await apiFetch("/tags");
     if (!res.ok) throw new Error("Failed to fetch models");
     const data = await res.json();
     return data.models || [];
@@ -515,9 +545,8 @@ async function sendMessage() {
     }));
 
   try {
-    const res = await fetch("/api/chat", {
+    const res = await apiFetch("/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         model: state.model,
         messages: messages,
@@ -721,8 +750,8 @@ function init() {
   // Focus input on page load
   dom.input.focus();
 
-  // Load models and conversations
-  loadModels();
+  // Load config (tunnel URL), then models and conversations
+  loadConfig().then(() => loadModels());
 }
 
 // ─── Start ─────────────────────────────────────────────────────────────────

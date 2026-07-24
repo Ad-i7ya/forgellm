@@ -15,7 +15,7 @@
 // Examples:
 //   "http://ollama-tunnel.your-domain.com"  (via cloudflared)
 //   "http://192.168.1.100:11434"            (local network)
-const DEFAULT_OLLAMA_HOST = "http://ollama.internal:11434";
+const DEFAULT_OLLAMA_HOST = "http://localhost:11434";
 
 // ─── Main Handler ────────────────────────────────────────────────────────────
 
@@ -31,7 +31,18 @@ export default {
       });
     }
 
-    // ── API Routes → proxy to Ollama ──────────────────────────────────────
+    // ── Config endpoint → tells the frontend where Ollama is ─────────────
+    if (url.pathname === "/_config") {
+      const ollamaHost = env.OLLAMA_HOST || DEFAULT_OLLAMA_HOST;
+      return new Response(JSON.stringify({ ollamaHost }), {
+        headers: {
+          "Content-Type": "application/json",
+          ...corsHeaders(),
+        },
+      });
+    }
+
+    // ── API Routes → proxy to Ollama (server-side, may be restricted) ─────
     if (url.pathname.startsWith("/api/")) {
       return handleApiRequest(request, url, env);
     }
