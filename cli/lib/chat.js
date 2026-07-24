@@ -78,8 +78,13 @@ export async function* sendChatMessage(host, model, messages, tools = null) {
       if (!line.trim()) continue;
       try {
         const json = JSON.parse(line);
+        // Yield text content if present
         if (json.message && json.message.content) {
           yield json.message.content;
+        }
+        // Yield tool calls as structured data
+        if (json.message && json.message.tool_calls && json.message.tool_calls.length > 0) {
+          yield { type: "tool_call", tool_calls: json.message.tool_calls };
         }
         if (json.done) {
           return;
@@ -96,6 +101,9 @@ export async function* sendChatMessage(host, model, messages, tools = null) {
       const json = JSON.parse(buffer);
       if (json.message && json.message.content) {
         yield json.message.content;
+      }
+      if (json.message && json.message.tool_calls && json.message.tool_calls.length > 0) {
+        yield { type: "tool_call", tool_calls: json.message.tool_calls };
       }
     } catch {}
   }
