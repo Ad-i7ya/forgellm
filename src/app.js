@@ -463,10 +463,14 @@ async function loadConfig() {
       const config = await res.json();
       if (config.ollamaHost && !config.ollamaHost.includes("localhost") && !config.ollamaHost.includes("internal")) {
         API_BASE = config.ollamaHost + "/api";
-        console.log("Using Ollama via:", API_BASE);
+        console.log("ForgeLM using Ollama via:", API_BASE);
+        return;
       }
     }
-  } catch { /* use fallback */ }
+    console.warn("ForgeLM config: No valid tunnel URL, falling back to Worker proxy");
+  } catch (err) {
+    console.warn("ForgeLM config: Could not load config (", err.message, ") — trycloudflare tunnel may not be running");
+  }
 }
 
 async function apiFetch(path, options = {}) {
