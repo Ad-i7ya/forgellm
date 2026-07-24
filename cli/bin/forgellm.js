@@ -22,7 +22,7 @@
  */
 
 import { createInterface } from "readline";
-import { loadConfig, getModels, sendChatMessage } from "../lib/chat.js";
+import { loadConfig, sendChatMessage } from "../lib/chat.js";
 import chalk from "chalk";
 
 // ─── Parse CLI Arguments ─────────────────────────────────────────────────
