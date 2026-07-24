@@ -111,10 +111,20 @@
 
 
 
+  function abortableFetch(url, options, timeoutMs) {
+    const controller = new AbortController();
+    let timeoutId;
+    if (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) {
+      try { return fetch(url, { ...options, signal: AbortSignal.timeout(timeoutMs) }); } catch (e) {}
+    }
+    timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    return fetch(url, { ...options, signal: controller.signal }).finally(() => clearTimeout(timeoutId));
+  }
+
   async function loadModels() {
     try {
       setModelStatus('connecting', 'Connecting to Ollama...');
-      const res = await fetch('/api/tags', { signal: AbortSignal.timeout(5000) });
+      const res = await abortableFetch('/api/tags', {}, 5000);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       state.models = data.models || [];
