@@ -20,6 +20,10 @@ const state = {
   models: [],
   streaming: false,
   abortController: null,
+  settings: {
+    smartScroll: true,
+    enterToSend: true,
+  },
 };
 
 // ─── DOM References ────────────────────────────────────────────────────────
@@ -40,6 +44,18 @@ const dom = {
   sidebar: $("#sidebar"),
   sidebarOverlay: $("#sidebarOverlay"),
   mobileMenuBtn: $("#mobileMenuBtn"),
+  settingsBtn: $("#settingsBtn"),
+  settingsModal: $("#settingsModal"),
+  settingsClose: $("#settingsClose"),
+  themeToggleCheckbox: $("#themeToggleCheckbox"),
+  smartScrollToggle: $("#smartScrollToggle"),
+  enterToSendToggle: $("#enterToSendToggle"),
+  cmdPalette: $("#cmdPalette"),
+  cmdPaletteBtn: $("#cmdPaletteBtn"),
+  cmdPaletteInput: $("#cmdPaletteInput"),
+  cmdPaletteResults: $("#cmdPaletteResults"),
+  connectionDot: $("#connectionDot"),
+  connectionText: $("#connectionText"),
 };
 
 // ─── Markdown Parser (lightweight) ─────────────────────────────────────────
@@ -707,6 +723,134 @@ async function loadModels() {
   }
 }
 
+// ─── Settings Modal ───────────────────────────────────────────────────────
+
+function openSettings() {
+  dom.settingsModal.classList.add("open");
+}
+
+function closeSettings() {
+  dom.settingsModal.classList.remove("open");
+}
+
+// ─── Command Palette ───────────────────────────────────────────────────────
+
+function openCmdPalette() {
+  dom.cmdPalette.classList.add("open");
+  dom.cmdPaletteInput.value = "";
+  dom.cmdPaletteInput.focus();
+  // Show all items
+  dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item").forEach((item) => {
+    item.style.display = "flex";
+  });
+}
+
+function closeCmdPalette() {
+  dom.cmdPalette.classList.remove("open");
+  dom.input.focus();
+}
+
+function filterCmdPalette() {
+  const query = dom.cmdPaletteInput.value.toLowerCase().trim();
+  dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item").forEach((item) => {
+    const label = item.querySelector(".cmd-label").textContent.toLowerCase();
+    item.style.display = !query || label.includes(query) ? "flex" : "none";
+  });
+}
+
+function executeCmdPaletteAction(action) {
+  closeCmdPalette();
+  switch (action) {
+    case "new-chat":
+      if (!state.streaming) createConversation();
+      break;
+    case "toggle-theme":
+      toggleTheme();
+      break;
+    case "open-settings":
+      openSettings();
+      break;
+    case "clear-chat":
+      if (state.streaming) return;
+      state.messages = [];
+      const conv = getCurrentConversation();
+      if (conv) conv.messages = [];
+      saveConversations();
+      renderMessages();
+      showToast("Conversation cleared", "success");
+      break;
+    case "show-shortcuts":
+      openSettings();
+      break;
+  }
+}
+
+// ─── Update Connection Status ──────────────────────────────────────────────
+
+function setConnectionStatus(status, text) {
+  dom.connectionDot.className = `connection-dot ${status}`;
+  dom.connectionText.textContent = text;
+}
+
+// ─── Keyboard Shortcuts ───────────────────────────────────────────────────
+
+function handleGlobalKeydown(e) {
+  // Cmd+K / Ctrl+K → command palette
+  if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+    e.preventDefault();
+    if (dom.cmdPalette.classList.contains("open")) {
+      closeCmdPalette();
+    } else {
+      openCmdPalette();
+    }
+    return;
+  }
+
+  // Escape → close modals
+  if (e.key === "Escape") {
+    if (dom.cmdPalette.classList.contains("open")) {
+      closeCmdPalette();
+      return;
+    }
+    if (dom.settingsModal.classList.contains("open")) {
+      closeSettings();
+      return;
+    }
+    if (dom.sidebar.classList.contains("open")) {
+      closeSidebar();
+      return;
+    }
+  }
+
+  // Ctrl+, → settings
+  if ((e.metaKey || e.ctrlKey) && e.key === ",") {
+    e.preventDefault();
+    openSettings();
+    return;
+  }
+
+  // Ctrl+Shift+N → new chat
+  if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "N") {
+    e.preventDefault();
+    if (!state.streaming) createConversation();
+    return;
+  }
+
+  // Ctrl+Shift+T → toggle theme
+  if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "T") {
+    e.preventDefault();
+    toggleTheme();
+    return;
+  }
+
+  // Ctrl+/ → show shortcuts (open settings)
+  if ((e.metaKey || e.ctrlKey) && e.key === "/") {
+    e.preventDefault();
+    openSettings();
+    return;
+  }
+}
+
 // ─── Event Binding ─────────────────────────────────────────────────────────
 
 function init() {
@@ -744,18 +888,84 @@ function init() {
   if (dom.sidebarOverlay) {
     dom.sidebarOverlay.addEventListener("click", closeSidebar);
   }
-  // Close sidebar on Escape key
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && dom.sidebar.classList.contains("open")) {
-      closeSidebar();
-    }
+
+  // Settings modal
+  if (dom.settingsBtn) {
+    dom.settingsBtn.addEventListener("click", openSettings);
+  }
+  if (dom.settingsClose) {
+    dom.settingsClose.addEventListener("click", closeSettings);
+  }
+  if (dom.settingsModal) {
+    dom.settingsModal.addEventListener("click", (e) => {
+      if (e.target === dom.settingsModal) closeSettings();
+    });
+  }
+
+  // Settings toggles
+  if (dom.themeToggleCheckbox) {
+    dom.themeToggleCheckbox.checked = getTheme() === "dark";
+    dom.themeToggleCheckbox.addEventListener("change", () => {
+      setTheme(dom.themeToggleCheckbox.checked ? "dark" : "light");
+    });
+  }
+  if (dom.smartScrollToggle) {
+    dom.smartScrollToggle.addEventListener("change", () => {
+      state.settings.smartScroll = dom.smartScrollToggle.checked;
+    });
+  }
+  if (dom.enterToSendToggle) {
+    dom.enterToSendToggle.addEventListener("change", () => {
+      state.settings.enterToSend = dom.enterToSendToggle.checked;
+    });
+  }
+
+  // Command palette
+  if (dom.cmdPaletteBtn) {
+    dom.cmdPaletteBtn.addEventListener("click", openCmdPalette);
+  }
+  if (dom.cmdPaletteInput) {
+    dom.cmdPaletteInput.addEventListener("input", filterCmdPalette);
+    dom.cmdPaletteInput.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeCmdPalette();
+        return;
+      }
+      if (e.key === "Enter") {
+        const visible = dom.cmdPaletteResults.querySelector(".cmd-palette-item[style*='flex'], .cmd-palette-item:not([style*='display: none'])");
+        if (visible) {
+          executeCmdPaletteAction(visible.dataset.action);
+        }
+      }
+    });
+  }
+  if (dom.cmdPalette) {
+    dom.cmdPalette.addEventListener("click", (e) => {
+      if (e.target === dom.cmdPalette) closeCmdPalette();
+    });
+  }
+
+  // Command palette item clicks
+  dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item").forEach((item) => {
+    item.addEventListener("click", () => {
+      executeCmdPaletteAction(item.dataset.action);
+    });
   });
+
+  // Global keyboard shortcuts
+  document.addEventListener("keydown", handleGlobalKeydown);
 
   // Focus input on page load
   dom.input.focus();
 
+  // Set connection status
+  setConnectionStatus("loading", "Connecting...");
+
   // Load config (tunnel URL), then models and conversations
-  loadConfig().then(() => loadModels());
+  loadConfig()
+    .then(() => loadModels())
+    .then(() => setConnectionStatus("connected", "Connected"))
+    .catch(() => setConnectionStatus("disconnected", "Disconnected"));
 }
 
 // ─── Start ─────────────────────────────────────────────────────────────────

@@ -4,27 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ForgeLM — AI Code Assistant</title>
-  <meta name="description" content="ForgeLM: Your AI-powered coding companion. Chat with language models and craft code together." />
+  <meta name="description" content="ForgeLM: Your AI-powered coding companion. Chat with language models and craft code together on your own infrastructure." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-theme" />
   <link rel="stylesheet" href="/styles.css" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236363f1'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-size='20' fill='white' font-family='sans-serif' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%236c6cf5'/%3E%3Cstop offset='100%25' stop-color='%23a78bfa'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23g)'/%3E%3Ctext x='16' y='23' text-anchor='middle' font-size='20' fill='white' font-family='sans-serif' font-weight='bold'%3EF%3C/text%3E%3C/svg%3E" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" defer></script>
 </head>
 <body>
-  <!-- ─── Mobile Menu Overlay ─────────────────────────────────── -->
+  <!-- ─── Mobile Overlays ─────────────────────────────────────── -->
   <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
-  <!-- ─── Mobile Menu Button ──────────────────────────────────── -->
+  <!-- Mobile Menu Button -->
   <button id="mobileMenuBtn" class="mobile-menu-btn" title="Toggle sidebar" aria-label="Toggle sidebar">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
       <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
     </svg>
   </button>
 
-  <!-- ─── App Shell ────────────────────────────────────────────── -->
+  <!-- ─── App Shell ───────────────────────────────────────────── -->
   <div id="app">
     <!-- Sidebar -->
     <aside id="sidebar" class="sidebar">
@@ -33,7 +33,7 @@
           <span class="logo-icon">⚒️</span>
           <span class="logo-text">ForgeLM</span>
         </div>
-        <button id="newChatBtn" class="btn btn-new-chat" title="New conversation">
+        <button id="newChatBtn" class="btn btn-new-chat" title="New conversation (Ctrl+Shift+N)">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
           </svg>
@@ -57,13 +57,18 @@
             </svg>
           </div>
         </div>
-        <div class="theme-toggle-wrapper">
-          <button id="themeToggle" class="btn btn-icon" title="Toggle theme">
+        <div class="sidebar-actions">
+          <button id="themeToggle" class="btn-icon" title="Toggle theme">
             <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
             <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+          </button>
+          <button id="settingsBtn" class="btn-icon" title="Settings">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
             </svg>
           </button>
         </div>
@@ -72,27 +77,36 @@
 
     <!-- Main Chat Area -->
     <main id="main" class="main">
+      <!-- Chat Header -->
+      <div class="chat-header">
+        <div class="chat-header-left">
+          <div class="connection-status">
+            <span id="connectionDot" class="connection-dot loading"></span>
+            <span id="connectionText">Connecting...</span>
+          </div>
+        </div>
+        <div class="chat-header-right">
+          <button id="cmdPaletteBtn" class="header-btn" title="Command palette (Ctrl+K)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/>
+            </svg>
+            <span class="keyboard-hint">⌘K</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Chat Messages -->
       <div id="chatContainer" class="chat-container">
         <div id="messages" class="messages">
-          <!-- Welcome message -->
           <div class="welcome">
             <div class="welcome-icon">⚒️</div>
             <h1 class="welcome-title">Welcome to ForgeLM</h1>
-            <p class="welcome-subtitle">Your AI-powered coding companion</p>
+            <p class="welcome-subtitle">Your AI-powered coding companion — running on your own infrastructure</p>
             <div class="welcome-suggestions">
-              <button class="suggestion-chip" data-prompt="Write a Python function to merge two sorted arrays">
-                Write a Python function to merge two sorted arrays
-              </button>
-              <button class="suggestion-chip" data-prompt="Explain how React useEffect works with examples">
-                Explain how React useEffect works
-              </button>
-              <button class="suggestion-chip" data-prompt="Create a Dockerfile for a Node.js app">
-                Create a Dockerfile for Node.js
-              </button>
-              <button class="suggestion-chip" data-prompt="Write a SQL query to find duplicate emails">
-                SQL: Find duplicate emails
-              </button>
+              <button class="suggestion-chip" data-prompt="Write a Python function to merge two sorted arrays">Write a Python function to merge two sorted arrays</button>
+              <button class="suggestion-chip" data-prompt="Explain how React useEffect works with examples">Explain how React useEffect works</button>
+              <button class="suggestion-chip" data-prompt="Create a Dockerfile for a Node.js app">Create a Dockerfile for Node.js</button>
+              <button class="suggestion-chip" data-prompt="Write a SQL query to find duplicate emails">SQL: Find duplicate emails</button>
             </div>
           </div>
         </div>
@@ -101,32 +115,117 @@
       <!-- Input Area -->
       <div class="input-area">
         <div class="input-wrapper">
-          <textarea
-            id="messageInput"
-            class="message-input"
-            placeholder="Ask me anything about code..."
-            rows="1"
-            autofocus
-          ></textarea>
+          <textarea id="messageInput" class="message-input" placeholder="Ask me anything about code..." rows="1" autofocus></textarea>
           <button id="sendBtn" class="btn btn-send" disabled title="Send message">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
             </svg>
           </button>
           <button id="stopBtn" class="btn btn-stop hidden" title="Stop generating">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-              <rect x="4" y="4" width="16" height="16" rx="2"/>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
           </button>
         </div>
-        <p class="input-footer">
-          ForgeLM may produce inaccurate information. Verify critical code.
-        </p>
+        <p class="input-footer">ForgeLM may produce inaccurate information. Verify critical code. <kbd>Ctrl+K</kbd> commands · <kbd>↑↓</kbd> history</p>
       </div>
     </main>
   </div>
 
-  <!-- ─── Toast Container ──────────────────────────────────────── -->
+  <!-- ─── Settings Modal ──────────────────────────────────────── -->
+  <div id="settingsModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">Settings</h2>
+        <button id="settingsClose" class="modal-close" title="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="settings-group">
+          <div class="settings-label">Appearance</div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">Dark Theme</div>
+              <div class="settings-item-desc">Toggle between dark and light mode</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="themeToggleCheckbox" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">Chat</div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">Smart Scrolling</div>
+              <div class="settings-item-desc">Only auto-scroll when near the bottom</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="smartScrollToggle" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">Send on Enter</div>
+              <div class="settings-item-desc">Enter sends, Shift+Enter for new line</div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="enterToSendToggle" checked />
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+        </div>
+        <div class="settings-group">
+          <div class="settings-label">About</div>
+          <div class="settings-item">
+            <div>
+              <div class="settings-item-label">ForgeLM v1.0.0</div>
+              <div class="settings-item-desc">AI-powered coding companion. Running on your own Ollama infrastructure.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Command Palette ─────────────────────────────────────── -->
+  <div id="cmdPalette" class="cmd-palette-overlay">
+    <div class="cmd-palette">
+      <input type="text" id="cmdPaletteInput" class="cmd-palette-input" placeholder="Type a command..." autocomplete="off" />
+      <div id="cmdPaletteResults" class="cmd-palette-results">
+        <div class="cmd-palette-item" data-action="new-chat">
+          <span class="cmd-icon">💬</span>
+          <span class="cmd-label">New conversation</span>
+          <span class="cmd-shortcut">Ctrl+Shift+N</span>
+        </div>
+        <div class="cmd-palette-item" data-action="toggle-theme">
+          <span class="cmd-icon">🎨</span>
+          <span class="cmd-label">Toggle theme (dark/light)</span>
+          <span class="cmd-shortcut">Ctrl+Shift+T</span>
+        </div>
+        <div class="cmd-palette-item" data-action="open-settings">
+          <span class="cmd-icon">⚙️</span>
+          <span class="cmd-label">Open settings</span>
+          <span class="cmd-shortcut">Ctrl+,</span>
+        </div>
+        <div class="cmd-palette-item" data-action="clear-chat">
+          <span class="cmd-icon">🧹</span>
+          <span class="cmd-label">Clear conversation</span>
+          <span class="cmd-shortcut"></span>
+        </div>
+        <div class="cmd-palette-item" data-action="show-shortcuts">
+          <span class="cmd-icon">⌨️</span>
+          <span class="cmd-label">Keyboard shortcuts</span>
+          <span class="cmd-shortcut">Ctrl+/</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Toast Container ─────────────────────────────────────── -->
   <div id="toastContainer" class="toast-container"></div>
 
   <script src="/app.js" type="module"></script>
