@@ -51,13 +51,13 @@ export default {
     switch (url.pathname) {
       case "/cli":
       case "/cli/":
-        return env.ASSETS.fetch(new Request(new URL(url.origin + "/index.html"), request));
+        return env.ASSETS.fetch(new Request(new URL("/cli.html", url.origin), request));
       case "/web":
       case "/web/":
-        return env.ASSETS.fetch(new Request(new URL(url.origin + "/web.html"), request));
+        return env.ASSETS.fetch(new Request(new URL("/web.html", url.origin), request));
       case "/chat":
       case "/chat/":
-        return env.ASSETS.fetch(new Request(new URL(url.origin + "/chat.html"), request));
+        return env.ASSETS.fetch(new Request(new URL("/chat.html", url.origin), request));
       default:
         return env.ASSETS.fetch(request);
     }

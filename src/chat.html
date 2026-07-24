@@ -98,7 +98,6 @@
   const state = {
     streaming: false,
     abortController: null,
-    ollamaHost: 'http://localhost:11434',
     models: [],
   };
 
@@ -110,18 +109,12 @@
     if (dom.statusInfo) dom.statusInfo.textContent = text || '';
   }
 
-  async function loadConfig() {
-    try {
-      const res = await fetch('/_config');
-      const data = await res.json();
-      if (data.ollamaHost) state.ollamaHost = data.ollamaHost;
-    } catch (e) {}
-  }
+
 
   async function loadModels() {
     try {
       setModelStatus('connecting', 'Connecting to Ollama...');
-      const res = await fetch(state.ollamaHost + '/api/tags', { signal: AbortSignal.timeout(5000) });
+      const res = await fetch('/api/tags', { signal: AbortSignal.timeout(5000) });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       state.models = data.models || [];
@@ -214,7 +207,7 @@
     var fullResponse = '';
 
     try {
-      var url = state.ollamaHost + '/api/chat';
+      var url = '/api/chat';
       var res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -296,7 +289,6 @@
   }
 
   async function init() {
-    await loadConfig();
     loadModels();
     setInterval(loadModels, 30000);
 
