@@ -4,8 +4,8 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
 <meta name="theme-color" content="#0a0a0b"/>
-<title>ForgeLM — the free coding agent (free Claude Code, Codex, Cursor &amp; Lovable alternative)</title>
-<meta name="description" content="ForgeLM is the free coding agent: a free CLI coding agent and ForgeLM Web, the free way to build full-stack apps. No subscription, no setup, no lock-in. The free alternative to Claude Code, Cursor, Codex, Lovable, Replit, Bolt, Windsurf, and Devin."/>
+<title>ForgeLM CLI — the free coding agent for your terminal (free Claude Code, Codex &amp; Cursor alternative)</title>
+<meta name="description" content="ForgeLM CLI is a 100% free coding agent for your terminal. No subscriptions, no API keys. Install with npm and start coding in seconds. The free alternative to Claude Code, OpenAI Codex, and Cursor."/>
 <meta name="keywords" content="ForgeLM,free coding agent,free CLI coding agent,free AI coding assistant,free Claude Code alternative,free Cursor alternative,free Codex"/>
 <meta name="robots" content="index, follow"/>
 <link rel="canonical" href="https://forgellm.adi7ya.workers.dev"/>
@@ -16,7 +16,7 @@
 <body class="flex flex-col min-h-screen font-sans bg-black text-white">
 <div class="flex-grow">
   <div class="dark relative min-h-screen bg-black font-paragraph font-light text-white">
-    
+
     <!-- ═══ HEADER ═══ -->
     <header class="lp-gpu fixed inset-x-0 top-0 z-50" style="opacity:0;transform:translateY(-10px)">
       <div aria-hidden="true" style="opacity:0" class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/90 via-black/55 to-transparent"></div>
@@ -30,8 +30,8 @@
         <div class="flex shrink-0 items-center gap-1 sm:gap-2 lg:gap-3">
           <nav aria-label="Products" class="items-center flex">
             <div class="hidden items-center xl:flex">
-              <a href="#cli" class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-[13px] transition-colors 2xl:px-2.5 2xl:text-sm text-white/55 hover:text-white">CLI</a>
-              <a href="#web" class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-[13px] transition-colors 2xl:px-2.5 2xl:text-sm text-white/55 hover:text-white">Web</a>
+              <a href="/" class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-[13px] transition-colors 2xl:px-2.5 2xl:text-sm text-white">CLI</a>
+              <a href="#web" class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-[13px] transition-colors 2xl:px-2.5 2xl:text-sm text-white/55 hover:text-white">Web<span class="text-[8px] font-semibold uppercase leading-none tracking-wide rounded-full bg-forest/15 px-1.5 py-0.5 text-forest-bright/90">beta</span></a>
               <a href="#chat" class="inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-2 text-[13px] transition-colors 2xl:px-2.5 2xl:text-sm text-white/55 hover:text-white">Chat</a>
             </div>
           </nav>
@@ -53,7 +53,7 @@
     <main>
       <!-- ─── HERO ─── -->
       <section class="relative isolate overflow-hidden">
-        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#03060a_0%,#060c12_24%,#101f23_44%,#172a29_57%,#121a1a_71%,#070a0b_86%,#000000_100%)]" style="opacity:0"></div>
+        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#070b11_0%,#0a1218_24%,#101f23_44%,#172a29_57%,#121a1a_71%,#070a0b_86%,#000000_100%)]" style="opacity:0"></div>
         <!-- Stars -->
         <div style="opacity:0" class="lp-gpu pointer-events-none absolute inset-0">
           <div class="pointer-events-none absolute inset-0 overflow-hidden">
@@ -83,87 +83,52 @@
           </div>
         </div>
 
-        <div class="relative z-30 mx-auto flex max-w-3xl flex-col items-center px-6 pt-40 text-center md:pt-44">
+        <!-- Hero Content -->
+        <div class="relative z-30 mx-auto flex max-w-3xl flex-col items-center px-6 pt-28 text-center md:pt-32">
           <div class="lp-gpu flex w-full flex-col items-center" style="opacity:0;transform:translateY(12px)">
-            <h1 class="lp-hero-heading text-balance text-[36px] font-normal leading-[1.1] text-white md:text-[56px] lg:text-[62px]">
-              We make coding <span class="text-forest-bright">100% free</span>
+            <h1 class="lp-hero-heading text-balance text-[34px] font-normal leading-[1.1] text-white md:text-[52px] lg:text-[58px]">
+              The free coding agent for your <span class="text-forest-bright">terminal</span>
             </h1>
-            <p class="mt-4 max-w-xl text-base leading-relaxed text-white/55 md:text-[17px]">
+            <p class="mt-4 max-w-md text-base leading-relaxed text-white/55 md:text-[17px]">
               No subscriptions, no API keys. The best open-source models.
             </p>
-            <div class="mt-9 w-full">
-              <div class="w-full">
-                <div class="mx-auto flex w-fit flex-wrap items-center justify-center gap-1 rounded-full p-1">
-                  <div class="flex items-center">
-                    <button class="product-tab active relative rounded-full px-2.5 py-1.5 text-sm font-normal transition-colors sm:px-4 text-white" data-product="cli">
-                      <span class="absolute inset-0 -z-10 rounded-full bg-white/10"></span>CLI
+            <div class="mt-9 w-full max-w-xl">
+              <div class="text-left">
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
+                  <div class="flex flex-1 items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-sm">
+                    <span class="select-none text-forest-bright">$</span>
+                    <span class="flex-1 text-white/90">npm install -g forgellm</span>
+                    <button class="copy-btn text-white/40 transition-colors hover:text-white" data-cmd="npm install -g forgellm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy h-4 w-4"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
                     </button>
                   </div>
-                  <div class="flex items-center">
-                    <button class="product-tab relative rounded-full px-2.5 py-1.5 text-sm font-normal transition-colors sm:px-4 text-white/55 hover:bg-white/[0.06] hover:text-white/90" data-product="web">Web</button>
-                  </div>
-                  <div class="flex items-center">
-                    <button class="product-tab relative rounded-full px-2.5 py-1.5 text-sm font-normal transition-colors sm:px-4 text-white/55 hover:bg-white/[0.06] hover:text-white/90" data-product="chat">Chat</button>
-                  </div>
+                  <button class="quick-start-btn flex shrink-0 items-center gap-1.5 text-[13px] text-white/45 transition-colors hover:text-white" aria-expanded="false">
+                    <span>Quick start</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-3.5 w-3.5 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
+                  </button>
                 </div>
-
-                <!-- CLI Product Panel -->
-                <div class="product-panel active mx-auto mt-4 w-full max-w-xl" data-product="cli">
-                  <div class="text-left">
-                    <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-sm">
-                      <span class="select-none text-forest-bright">$</span>
-                      <span class="flex-1 text-white/90">npm install -g forgellm</span>
-                      <button class="copy-btn text-white/40 transition-colors hover:text-white" data-cmd="npm install -g forgellm">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy h-4 w-4"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
-                      </button>
-                    </div>
-                    <div class="mt-2 flex justify-end">
-                      <button class="install-guide-btn flex items-center gap-1.5 text-[13px] text-white/40 transition-colors hover:text-white">
-                        <span>Install guide</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-3.5 w-3.5 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
-                      </button>
-                    </div>
-                    <div class="install-guide-content mt-3 hidden space-y-1.5 font-mono text-[13px] text-white/55">
-                      <p><span class="select-none text-white/30">$</span>&nbsp; cd your-project</p>
-                      <p><span class="select-none text-white/30">$</span>&nbsp; forgellm</p>
-                      <p class="mt-2 text-[13px] text-white/40">No API key, no credit card. It just runs.</p>
-                    </div>
+                <!-- Quick start dropdown -->
+                <div class="quick-start-content mt-3 hidden space-y-2">
+                  <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-mono text-sm">
+                    <span class="select-none text-forest-bright">$</span>
+                    <code class="flex-1 select-all text-white/90">cd your-project</code>
                   </div>
-                </div>
-
-                <!-- Web Product Panel -->
-                <div class="product-panel mx-auto mt-4 w-full max-w-xl hidden" data-product="web">
-                  <div class="text-left">
-                    <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-sm">
-                      <span class="select-none text-forest-bright">→</span>
-                      <span class="flex-1 text-white/90">Start building in your browser</span>
-                      <a href="/chat" class="text-forest-bright/80 transition-colors hover:text-forest-bright text-sm font-mono">Open Web App →</a>
-                    </div>
-                    <p class="mt-3 text-[13px] text-white/40">Full-stack app builder. No setup required.</p>
-                  </div>
-                </div>
-
-                <!-- Chat Product Panel -->
-                <div class="product-panel mx-auto mt-4 w-full max-w-xl hidden" data-product="chat">
-                  <div class="text-left">
-                    <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 font-mono text-sm">
-                      <span class="select-none text-forest-bright">💬</span>
-                      <span class="flex-1 text-white/90">Chat with AI directly</span>
-                      <a href="/chat" class="text-forest-bright/80 transition-colors hover:text-forest-bright text-sm font-mono">Open Chat →</a>
-                    </div>
-                    <p class="mt-3 text-[13px] text-white/40">No login needed. Just start coding.</p>
+                  <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-mono text-sm">
+                    <span class="select-none text-forest-bright">$</span>
+                    <code class="flex-1 select-all text-white/90">forgelm</code>
                   </div>
                 </div>
               </div>
             </div>
+            <p class="mt-4 text-[13px] text-white/40">Free forever — ForgeLM is supported by text ads.</p>
           </div>
         </div>
 
-        <!-- Background images -->
+        <!-- Background + Pricing -->
         <div class="relative -mt-12 h-[108vh] w-full md:-mt-16 md:h-[118vh]">
           <div class="hero-bg-sky pointer-events-none absolute inset-x-0 bottom-[32%] z-0 w-full select-none object-cover brightness-[0.7] saturate-[0.8]" style="height:60%;background:radial-gradient(ellipse at 50% 100%, rgba(99,99,241,0.15) 0%, rgba(99,99,241,0.05) 40%, transparent 70%)"></div>
           <div class="hero-bg-hills pointer-events-none absolute inset-x-0 bottom-[21%] z-[1] w-full select-none object-cover brightness-[1.15] contrast-[1.05]" style="height:45%;background:linear-gradient(180deg, transparent 0%, rgba(99,99,241,0.04) 30%, rgba(99,99,241,0.08) 60%, rgba(0,0,0,0.3) 100%)"></div>
-          
+
           <!-- Pricing Comparison -->
           <div class="lp-gpu pointer-events-none absolute inset-x-0 top-[11%] z-10 mx-auto w-full max-w-4xl px-3 sm:px-6" style="opacity:0">
             <div class="relative w-full overflow-hidden rounded-t-[20px] border border-b-0 border-white/[0.08] bg-[#0b0c0e]/95 px-4 pt-7 pb-[42vh] sm:px-9 sm:pt-9 sm:pb-[46vh] shadow-[0_50px_140px_-25px_rgba(0,0,0,0.9),0_0_0_1px_rgba(255,255,255,0.04)_inset]">
@@ -181,6 +146,7 @@
                   <span class="absolute top-0 h-full w-px bg-white/[0.05]" style="left:66%"></span>
                 </div>
                 <div class="relative space-y-3 sm:space-y-4">
+                  <!-- ForgeLM -->
                   <div class="flex items-center">
                     <div class="flex shrink-0 items-center gap-2 sm:gap-3 w-[112px] sm:w-[180px] lg:w-[200px]">
                       <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-[#6363f1] text-[12px] font-bold text-white">F</span>
@@ -188,21 +154,18 @@
                     </div>
                     <div class="relative h-9 flex-1 sm:h-11">
                       <div class="absolute left-0 top-1/2 h-[22px] w-[3px] -translate-y-1/2 rounded-full bg-forest-bright shadow-[0_0_14px_4px_rgba(84,169,103,0.7)] sm:h-[26px]" style="opacity:0;transform:scaleY(0)"></div>
-                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:3px;opacity:0">
-                        <span class="font-normal text-forest-bright">$0 / yr</span>
-                      </span>
+                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:3px;opacity:0"><span class="font-normal text-forest-bright">$0 / yr</span></span>
                     </div>
                   </div>
+                  <!-- Others -->
                   <div class="flex items-center">
                     <div class="flex shrink-0 items-center gap-2 sm:gap-3 w-[112px] sm:w-[180px] lg:w-[200px]">
                       <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-[#f87171]/20 text-[12px] font-bold text-[#f87171]">C</span>
                       <span class="truncate text-[12.5px] sm:text-[15px] text-white/70">Claude Code</span>
                     </div>
                     <div class="relative h-9 flex-1 sm:h-11">
-                      <div class="absolute left-0 top-1/2 h-[22px] -translate-y-1/2 rounded-l-[3px] rounded-r-[6px] sm:h-[26px]" style="background:linear-gradient(90deg, #f8717126, #ef4444);width:57%"></div>
-                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:57%;opacity:1">
-                        <span class="text-white/60">$1,200<span class="text-white/30"> / yr</span></span>
-                      </span>
+                      <div class="pricing-bar absolute left-0 top-1/2 h-[22px] -translate-y-1/2 rounded-l-[3px] rounded-r-[6px] sm:h-[26px]" style="background:linear-gradient(90deg, #f8717126, #ef4444);width:57%"></div>
+                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:57%;opacity:1"><span class="text-white/60">$1,200<span class="text-white/30"> / yr</span></span></span>
                     </div>
                   </div>
                   <div class="flex items-center">
@@ -211,10 +174,8 @@
                       <span class="truncate text-[12.5px] sm:text-[15px] text-white/70">Cursor</span>
                     </div>
                     <div class="relative h-9 flex-1 sm:h-11">
-                      <div class="absolute left-0 top-1/2 h-[22px] -translate-y-1/2 rounded-l-[3px] rounded-r-[6px] sm:h-[26px]" style="background:linear-gradient(90deg, #f8717126, #ef4444);width:34%"></div>
-                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:34%;opacity:1">
-                        <span class="text-white/60">$720<span class="text-white/30"> / yr</span></span>
-                      </span>
+                      <div class="pricing-bar absolute left-0 top-1/2 h-[22px] -translate-y-1/2 rounded-l-[3px] rounded-r-[6px] sm:h-[26px]" style="background:linear-gradient(90deg, #f8717126, #ef4444);width:34%"></div>
+                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:34%;opacity:1"><span class="text-white/60">$720<span class="text-white/30"> / yr</span></span></span>
                     </div>
                   </div>
                   <div class="flex items-center">
@@ -223,10 +184,8 @@
                       <span class="truncate text-[12.5px] sm:text-[15px] text-white/70">Devin</span>
                     </div>
                     <div class="relative h-9 flex-1 sm:h-11">
-                      <div class="absolute left-0 top-1/2 h-[22px] -translate-y-1/2 rounded-l-[3px] rounded-r-[6px] sm:h-[26px]" style="background:linear-gradient(90deg, #f8717126, #ef4444);width:80%"></div>
-                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:80%;opacity:1">
-                        <span class="text-white/60">$2,400<span class="text-white/30"> / yr</span></span>
-                      </span>
+                      <div class="pricing-bar absolute left-0 top-1/2 h-[22px] -translate-y-1/2 rounded-l-[3px] rounded-r-[6px] sm:h-[26px]" style="background:linear-gradient(90deg, #f8717126, #ef4444);width:80%"></div>
+                      <span class="absolute top-1/2 -translate-y-1/2 whitespace-nowrap pl-2 text-[12px] font-normal tabular-nums sm:pl-3 sm:text-[15px]" style="left:80%;opacity:1"><span class="text-white/60">$2,400<span class="text-white/30"> / yr</span></span></span>
                     </div>
                   </div>
                 </div>
@@ -249,259 +208,166 @@
         </div>
       </section>
 
-      <!-- ─── SECTIONS ─── -->
+      <!-- ─── GET STARTED SECTION ─── -->
       <div class="relative z-10 bg-black">
-        <section class="relative z-30 -mt-[24vh] bg-black px-6 py-10 md:-mt-[38vh]">
-          <div class="mx-auto max-w-6xl divide-y divide-white/[0.06]">
-            
-            <!-- CLI Section -->
-            <div id="cli" class="grid scroll-mt-24 items-center gap-10 py-24 md:grid-cols-2 md:gap-16 md:py-36">
-              <div class="" style="opacity:0;transform:translateY(24px)">
-                <div class="mb-3 flex items-center gap-2">
-                  <span class="rounded-full border border-forest/40 bg-forest/15 px-2 py-0.5 text-[10px] font-normal uppercase tracking-wide text-forest-bright">New</span>
-                </div>
-                <h2 class="lp-hero-heading text-[34px] leading-[1.1] text-white md:text-[46px] lg:text-[52px]">Introducing <span class="text-forest-bright">ForgeLM CLI</span></h2>
-                <p class="mt-4 max-w-md text-lg text-white/55">A 100% free coding agent, right from your terminal.</p>
-                <div class="mt-7">
-                  <p class="mb-3 text-xs uppercase tracking-wider text-white/35">Replaces these paid tools</p>
-                  <div class="grid grid-cols-2 gap-x-7 gap-y-5 sm:grid-cols-3">
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">O</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">OpenCode</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">Cx</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Codex</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">Cu</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Cursor</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">CC</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Claude Code</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">D</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Devin</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="mt-8">
-                  <div class="w-full max-w-sm">
-                    <button class="copy-btn group flex w-full items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-left font-mono text-sm transition-colors hover:border-white/20" data-cmd="npm install -g forgellm">
-                      <span class="select-none text-forest-bright">$</span>
-                      <span class="flex-1 text-white/90">npm install -g forgellm</span>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy h-4 w-4 text-white/40 transition-colors group-hover:text-white"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+        <section class="relative bg-black px-6 py-24 md:py-28">
+          <div class="mx-auto max-w-5xl">
+            <div class="mx-auto max-w-2xl text-center">
+              <p class="mb-4 font-mono text-xs uppercase tracking-[0.25em] text-forest-bright/90">Get started</p>
+              <h2 class="lp-feature-heading text-white text-[34px] leading-[1.1] md:text-[46px] lg:text-[52px] font-normal">Up and running in under a minute</h2>
+              <p class="mt-4 text-base leading-relaxed text-white/55">Install once and ForgeLM lives in your terminal. No accounts to create, no keys to paste.</p>
+            </div>
+            <ol class="mx-auto mt-14 max-w-2xl space-y-5">
+              <li class="flex gap-4" style="opacity:0;transform:translateY(16px)">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-forest/30 bg-forest/10 font-mono text-xs text-forest-bright">1</span>
+                <div class="min-w-0 flex-1">
+                  <p class="font-normal text-white/90">Install the CLI</p>
+                  <p class="mt-0.5 text-sm text-white/45">Requires Node.js 18+. Works on macOS, Windows, and Linux.</p>
+                  <div class="mt-2.5 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-mono text-sm">
+                    <span class="select-none text-forest-bright">$</span>
+                    <code class="flex-1 select-all text-white/90">npm install -g forgellm</code>
+                    <button class="copy-btn text-white/40 transition-colors hover:text-white" data-cmd="npm install -g forgellm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy h-4 w-4"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
                     </button>
-                    <ol class="mt-3 space-y-1.5 font-mono text-[13px] text-white/55">
-                      <li><span class="select-none text-white/30">$</span>&nbsp; cd your-project</li>
-                      <li><span class="select-none text-white/30">$</span>&nbsp; forgellm</li>
-                    </ol>
-                    <p class="mt-2 text-[13px] text-white/40">No API key, no credit card. It just runs.</p>
                   </div>
                 </div>
-              </div>
-              <div class="" style="opacity:0">
-                <div class="lp-gpu" style="transform:none">
-                  <div class="flex h-[380px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0f] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]">
-                    <div class="flex items-center gap-2 border-b border-white/[0.06] px-4 py-3">
-                      <span class="flex items-center gap-1.5">
-                        <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]/80"></span>
-                        <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]/80"></span>
-                        <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]/80"></span>
-                      </span>
-                      <span class="ml-1 text-[12px] text-white/45">forgelm — zsh</span>
-                    </div>
-                    <div class="min-h-0 flex-1">
-                      <div class="flex h-full flex-col px-4 py-3.5 font-mono text-[13px] leading-relaxed">
-                        <div class="mb-2.5 flex items-center justify-between text-[11px] text-white/30">
-                          <span class="font-normal text-forest-bright/80">◆ forgelm</span>
-                          <span>DeepSeek V4 · ~/my-app</span>
-                        </div>
-                        <div class="space-y-1.5 text-white/70">
-                          <p><span class="text-forest-bright">›</span> create a react todo app</p>
-                          <p class="text-white/85"><span class="text-white/45">└</span> analyzing request...</p>
-                          <p class="text-white/85"><span class="text-white/45">└</span> creating files...</p>
-                          <p class="text-forest-bright/80"><span class="text-white/45">└</span> ✓ Done! 3 files created</p>
-                        </div>
-                        <p class="mt-auto text-white/85">
-                          <span class="text-forest-bright">›</span> <span class="ml-0.5 inline-block h-3.5 w-1.5 animate-pulse bg-forest-bright align-middle"></span>
-                        </p>
-                      </div>
-                    </div>
+              </li>
+              <li class="flex gap-4" style="opacity:0;transform:translateY(16px)">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-forest/30 bg-forest/10 font-mono text-xs text-forest-bright">2</span>
+                <div class="min-w-0 flex-1">
+                  <p class="font-normal text-white/90">Open your project</p>
+                  <p class="mt-0.5 text-sm text-white/45">Point ForgeLM at any codebase — new or existing.</p>
+                  <div class="mt-2.5 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-mono text-sm">
+                    <span class="select-none text-forest-bright">$</span>
+                    <code class="flex-1 select-all text-white/90">cd your-project</code>
+                    <button class="copy-btn text-white/40 transition-colors hover:text-white" data-cmd="cd your-project">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy h-4 w-4"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                    </button>
                   </div>
                 </div>
-              </div>
-            </div>
-
-            <!-- Web Section -->
-            <div id="web" class="grid scroll-mt-24 items-center gap-10 py-24 md:grid-cols-2 md:gap-16 md:py-36">
-              <div class="md:order-2" style="opacity:0;transform:translateY(24px)">
-                <div class="mb-3 flex items-center gap-2">
-                  <span class="rounded-full border border-forest/40 bg-forest/15 px-2 py-0.5 text-[10px] font-normal uppercase tracking-wide text-forest-bright">New</span>
-                </div>
-                <h2 class="lp-hero-heading text-[34px] leading-[1.1] text-white md:text-[46px] lg:text-[52px]">Introducing <span class="text-forest-bright">ForgeLM Web</span></h2>
-                <p class="mt-4 max-w-md text-lg text-white/55">100% free AI web app builder — from prompt to deployed app.</p>
-                <div class="mt-7">
-                  <p class="mb-3 text-xs uppercase tracking-wider text-white/35">Replaces these paid tools</p>
-                  <div class="grid grid-cols-2 gap-x-7 gap-y-5 sm:grid-cols-3">
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">E</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Emergent</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">B</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Bolt.new</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">L</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Lovable</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">R</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Replit</span>
-                    </div>
-                    <div class="flex items-center gap-3">
-                      <span class="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[5px] bg-white/10 text-[11px] font-bold text-white/70">W</span>
-                      <span class="truncate text-[14px] font-normal text-white/85">Windsurf</span>
-                    </div>
+              </li>
+              <li class="flex gap-4" style="opacity:0;transform:translateY(16px)">
+                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-forest/30 bg-forest/10 font-mono text-xs text-forest-bright">3</span>
+                <div class="min-w-0 flex-1">
+                  <p class="font-normal text-white/90">Start coding</p>
+                  <p class="mt-0.5 text-sm text-white/45">No API key and no credit card. Just describe what you want.</p>
+                  <div class="mt-2.5 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 font-mono text-sm">
+                    <span class="select-none text-forest-bright">$</span>
+                    <code class="flex-1 select-all text-white/90">forgelm</code>
+                    <button class="copy-btn text-white/40 transition-colors hover:text-white" data-cmd="forgelm">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy h-4 w-4"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg>
+                    </button>
                   </div>
                 </div>
-                <div class="mt-8">
-                  <a href="/chat" class="group inline-flex items-center gap-2 rounded-xl bg-forest-bright/15 px-5 py-3 text-[15px] font-normal text-forest-bright transition-colors hover:bg-forest-bright/25">
-                    Start building →
-                  </a>
-                </div>
-              </div>
-              <div class="md:order-1" style="opacity:0">
-                <div class="lp-gpu" style="transform:none">
-                  <div class="flex h-[380px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0f] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]">
-                    <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
-                      <div class="flex items-center gap-2">
-                        <span class="flex items-center gap-1.5">
-                          <span class="h-2.5 w-2.5 rounded-full bg-[#ff5f57]/80"></span>
-                          <span class="h-2.5 w-2.5 rounded-full bg-[#febc2e]/80"></span>
-                          <span class="h-2.5 w-2.5 rounded-full bg-[#28c840]/80"></span>
-                        </span>
-                        <span class="ml-1 text-[12px] text-white/45">forgelm — Web</span>
-                      </div>
-                      <span class="text-[11px] text-white/30">forge<span class="text-forest-bright">LM</span></span>
-                    </div>
-                    <div class="min-h-0 flex-1 p-4">
-                      <div class="flex h-full flex-col gap-3">
-                        <div class="flex gap-2.5">
-                          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#6363f1] text-[11px] font-bold text-white">F</span>
-                          <div class="rounded-2xl rounded-tl-sm bg-white/[0.06] px-3.5 py-2.5 text-[13px] leading-relaxed text-white/90">
-                            Build me a landing page for a startup
-                          </div>
-                        </div>
-                        <div class="flex gap-2.5">
-                          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#6363f1] text-[11px] font-bold text-white">F</span>
-                          <div class="rounded-2xl rounded-tl-sm bg-[#6363f1]/10 px-3.5 py-2.5 text-[13px] leading-relaxed text-white/85">
-                            <p class="mb-1 text-forest-bright/90 text-[11px]">ForgeLM · DeepSeek V4 Flash</p>
-                            <p>I'll create a modern landing page with:</p>
-                            <ul class="mt-1 space-y-0.5 text-white/70">
-                              <li>• Hero section with gradient</li>
-                              <li>• Features grid (3 columns)</li>
-                              <li>• Pricing cards</li>
-                              <li>• Responsive nav + footer</li>
-                            </ul>
-                            <div class="mt-2 flex gap-1.5">
-                              <span class="rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[11px] text-white/50">index.html</span>
-                              <span class="rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[11px] text-white/50">styles.css</span>
-                              <span class="rounded-md border border-white/[0.08] bg-white/[0.03] px-2 py-1 text-[11px] text-white/50">app.js</span>
-                            </div>
-                          </div>
-                        </div>
-                        <p class="text-white/85">
-                          <span class="text-forest-bright">›</span> <span class="ml-0.5 inline-block h-3.5 w-1.5 animate-pulse bg-forest-bright align-middle"></span>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Chat Section -->
-            <div id="chat" class="grid scroll-mt-24 items-center gap-10 py-24 md:grid-cols-2 md:gap-16 md:py-36">
-              <div class="" style="opacity:0;transform:translateY(24px)">
-                <h2 class="lp-hero-heading text-[34px] leading-[1.1] text-white md:text-[46px] lg:text-[52px]">Free <span class="text-forest-bright">AI Chat</span></h2>
-                <p class="mt-4 max-w-md text-lg text-white/55">No login, no limits. Just pick a model and start coding.</p>
-                <div class="mt-8 flex flex-wrap gap-3">
-                  <a href="/chat" class="group inline-flex items-center gap-2 rounded-xl bg-forest-bright/15 px-5 py-3 text-[15px] font-normal text-forest-bright transition-colors hover:bg-forest-bright/25">
-                    Start chatting →
-                  </a>
-                  <a href="/chat" class="group inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3 text-[15px] font-normal text-white/70 transition-colors hover:border-white/20 hover:text-white">
-                    Open Web App
-                  </a>
-                </div>
-              </div>
-              <div class="" style="opacity:0">
-                <div class="lp-gpu" style="transform:none">
-                  <div class="flex h-[380px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0f] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.8)]">
-                    <div class="flex items-center justify-between border-b border-white/[0.06] px-4 py-3">
-                      <div class="flex items-center gap-2">
-                        <span class="h-2.5 w-2.5 rounded-full bg-forest-bright"></span>
-                        <span class="text-[12px] font-normal text-white/85">Connected</span>
-                      </div>
-                      <span class="flex items-center gap-1.5 text-[11px] text-white/40">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sparkles h-3 w-3"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path></svg>
-                        3 models available
-                      </span>
-                    </div>
-                    <div class="min-h-0 flex-1 p-4">
-                      <div class="flex h-full flex-col gap-3">
-                        <div class="flex gap-2.5">
-                          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white/10 text-[11px] font-bold text-white/50">U</span>
-                          <div class="rounded-2xl rounded-tl-sm bg-white/[0.06] px-3.5 py-2.5 text-[13px] leading-relaxed text-white/90">
-                            explain closures in javascript
-                          </div>
-                        </div>
-                        <div class="flex gap-2.5">
-                          <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#6363f1] text-[11px] font-bold text-white">F</span>
-                          <div class="rounded-2xl rounded-tl-sm bg-[#6363f1]/10 px-3.5 py-2.5 text-[13px] leading-relaxed text-white/85">
-                            <p>A closure is a function that retains access to its outer scope even after the outer function has returned...</p>
-                            <div class="mt-2 rounded-lg border border-white/[0.08] bg-black/40 px-3 py-2 font-mono text-[12px] text-white/70">
-                              <span class="text-white/40">function </span><span class="text-[#c792ea]">outer</span><span class="text-white/40">(</span>x<span class="text-white/40">) {</span><br/>
-                              <span class="text-white/40">&nbsp; return function </span><span class="text-[#c792ea]">inner</span><span class="text-white/40">(</span>y<span class="text-white/40">) {</span><br/>
-                              <span class="text-white/40">&nbsp; &nbsp; return x + y;</span><br/>
-                              <span class="text-white/40">&nbsp; }</span><br/>
-                              <span class="text-white/40">}</span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="border-t border-white/[0.06] px-4 py-3">
-                      <div class="flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2">
-                        <span class="text-[13px] text-white/40">Ask anything...</span>
-                        <span class="ml-auto text-[11px] text-white/25">⏎ Send</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+              </li>
+            </ol>
           </div>
         </section>
 
-        <!-- ─── FOOTER ─── -->
-        <footer class="border-t border-white/[0.06] px-6 py-12">
-          <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
-            <div class="flex items-center gap-3">
-              <span class="flex h-6 w-6 items-center justify-center rounded-[5px] bg-[#6363f1] text-[11px] font-bold text-white">F</span>
-              <span class="text-[14px] text-white/40">forgelm</span>
-              <span class="text-[12px] text-white/25">— free coding agent</span>
+        <!-- ─── FAQS SECTION ─── -->
+        <section class="relative px-6 py-24 md:py-32">
+          <div class="mx-auto grid max-w-5xl gap-12 lg:grid-cols-[0.8fr_1.4fr]">
+            <div class="lg:sticky lg:top-24 lg:self-start">
+              <h2 class="lp-feature-heading text-white text-[34px] leading-[1.1] md:text-[46px] font-normal">FAQs</h2>
             </div>
-            <div class="flex items-center gap-4 text-[13px] text-white/40">
-              <a href="https://github.com/Ad-i7ya/forgellm" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-white">GitHub</a>
-              <a href="/chat" class="transition-colors hover:text-white">Chat</a>
+            <div class="divide-y divide-white/[0.08]">
+              <!-- FAQ 1 -->
+              <div class="faq-item">
+                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
+                  <span class="font-mono text-xs text-forest-bright">01</span>
+                  <span class="flex-1 font-normal transition-colors text-white">How can it be free?</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
+                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM is supported by text ads.</p>
+                </div>
+              </div>
+              <!-- FAQ 2 -->
+              <div class="faq-item">
+                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
+                  <span class="font-mono text-xs text-white/35">02</span>
+                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">What models do you use?</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
+                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM runs on your own Ollama models. Deploy DeepSeek V4, MiMo, MiniMax, or any open-source model on your VPS. You choose what runs and keep full control.</p>
+                </div>
+              </div>
+              <!-- FAQ 3 -->
+              <div class="faq-item">
+                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
+                  <span class="font-mono text-xs text-white/35">03</span>
+                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">What is the cloud setup?</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
+                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM uses Ollama on your VPS connected through a Cloudflare Tunnel. The web UI is served via Cloudflare Workers. Everything is self-hosted and private.</p>
+                </div>
+              </div>
+              <!-- FAQ 4 -->
+              <div class="faq-item">
+                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
+                  <span class="font-mono text-xs text-white/35">04</span>
+                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">Is my data private?</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
+                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">Yes. Since ForgeLM runs on your own Ollama instance, your code and conversations never leave your infrastructure. No third-party AI providers see your data.</p>
+                </div>
+              </div>
+              <!-- FAQ 5 -->
+              <div class="faq-item">
+                <button class="faq-trigger group flex w-full items-center gap-4 px-2 py-5 text-left">
+                  <span class="font-mono text-xs text-white/35">05</span>
+                  <span class="flex-1 font-normal transition-colors text-white/75 group-hover:text-white">What else is cool in ForgeLM?</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-down h-4 w-4 shrink-0 text-white/40 transition-transform"><path d="m6 9 6 6 6-6"></path></svg>
+                </button>
+                <div class="faq-content overflow-hidden" style="max-height:0;opacity:0">
+                  <p class="ml-[2.1rem] mr-2 whitespace-pre-line border-l-2 border-forest/40 pb-5 pl-4 text-sm leading-relaxed text-white/60">ForgeLM comes with 7 specialized tools: read_file, write_file, edit_file, run_command, list_files, web_search, and spawn_agent. It features streaming responses, model selection, conversation history, and keyboard shortcuts. For the web, you get settings, command palette (Ctrl+K), and theme toggle.</p>
+                </div>
+              </div>
             </div>
           </div>
-        </footer>
+        </section>
+
+        <!-- ─── BIG BRAND SECTION ─── -->
+        <section class="relative overflow-hidden bg-black">
+          <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(to_bottom,#000000_0%,#04070c_42%,#080d16_72%,#0b1422_100%)]"></div>
+          <div class="relative z-20 mx-auto max-w-6xl px-6 pt-24 md:pt-32">
+            <div style="transform:none" class="will-change-transform">
+              <p class="text-center lp-serif text-xl text-white/90 md:text-3xl" style="opacity:0;transform:translateY(16px)">We just made coding 100% free</p>
+            </div>
+          </div>
+          <div class="relative mt-10 h-[46vh] min-h-[360px] select-none md:mt-12 md:h-[56vh]">
+            <div style="transform:none" class="will-change-transform absolute inset-x-0 bottom-[clamp(64px,calc(10vw-30px),240px)] z-0">
+              <h2 aria-label="forgelm" class="lp-hero-heading bg-gradient-to-b from-white via-white/80 to-white/20 bg-clip-text text-center font-medium leading-none tracking-tight text-transparent" style="font-size:clamp(3.25rem, 13vw, 11rem)">forgelm</h2>
+            </div>
+            <div class="hero-bg-hills-bottom pointer-events-none absolute inset-x-0 bottom-[8%] z-[1] h-[clamp(150px,26vw,380px)] w-full select-none object-cover object-bottom opacity-30 brightness-[0.5] saturate-[0.7]" style="background:linear-gradient(180deg, transparent 0%, rgba(99,99,241,0.04) 30%, rgba(99,99,241,0.08) 60%, rgba(0,0,0,0.3) 100%)"></div>
+            <div class="hero-bg-bushes-bottom pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[clamp(130px,22vw,440px)] w-full origin-bottom select-none object-cover object-bottom brightness-[0.5] saturate-[0.8]" style="background:linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.12) 20%, rgba(0,0,0,0.45) 40%, rgba(0,0,0,0.8) 60%, #000 78%)"></div>
+          </div>
+
+          <!-- ─── FOOTER ─── -->
+          <div class="relative z-20 border-t border-white/10 bg-black">
+            <div class="mx-auto flex max-w-6xl flex-col items-center gap-5 px-6 py-7 md:flex-row md:items-center md:justify-between">
+              <nav class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[13px] text-white/45">
+                <a href="/" class="transition-colors hover:text-white">CLI</a>
+                <a href="/chat" class="transition-colors hover:text-white">Web</a>
+                <a href="/chat" class="transition-colors hover:text-white">Chat</a>
+                <a href="https://github.com/Ad-i7ya/forgellm" target="_blank" rel="noopener noreferrer" class="transition-colors hover:text-white">GitHub</a>
+              </nav>
+              <div class="flex items-center gap-4">
+                <span class="text-xs text-white/30">© 2026 ForgeLM. All rights reserved.</span>
+                <span class="h-4 w-px bg-white/10"></span>
+                <div class="flex items-center gap-3">
+                  <a href="https://github.com/Ad-i7ya/forgellm" target="_blank" rel="noopener noreferrer" aria-label="Star on GitHub" class="items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-white/55 transition-colors hover:border-white/20 hover:bg-white/[0.08] hover:text-white inline-flex" data-state="closed">
+                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="h-[16px] w-[16px] shrink-0"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0 0 22 12.017C22 6.484 17.523 2 12 2Z"></path></svg>
+                    <span class="text-xs font-medium tabular-nums">★</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
   </div>

@@ -178,19 +178,44 @@
     });
   }
 
-  // ─── Install guide toggle ──────────────────────────────────────────
-  function initInstallGuide() {
-    const toggleBtn = document.querySelector('.install-guide-btn');
-    const content = document.querySelector('.install-guide-content');
+  // ─── Quick start toggle (CLI page) ───────────────────────────────
+  function initQuickStart() {
+    const toggleBtn = document.querySelector('.quick-start-btn');
+    const content = document.querySelector('.quick-start-content');
     if (!toggleBtn || !content) return;
 
     toggleBtn.addEventListener('click', () => {
       const isHidden = content.classList.contains('hidden');
       content.classList.toggle('hidden');
+      toggleBtn.setAttribute('aria-expanded', !isHidden);
       const chevron = toggleBtn.querySelector('.lucide-chevron-down');
       if (chevron) {
         chevron.style.transform = isHidden ? 'rotate(180deg)' : 'rotate(0deg)';
       }
+    });
+  }
+
+  // ─── FAQ Accordion ───────────────────────────────────────────────
+  function initFAQs() {
+    const triggers = document.querySelectorAll('.faq-trigger');
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        if (!item) return;
+        const content = item.querySelector('.faq-content');
+        const chevron = trigger.querySelector('.lucide-chevron-down');
+        const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
+        
+        if (isOpen) {
+          content.style.maxHeight = '0px';
+          content.style.opacity = '0';
+          if (chevron) chevron.style.transform = 'rotate(0deg)';
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          content.style.opacity = '1';
+          if (chevron) chevron.style.transform = 'rotate(180deg)';
+        }
+      });
     });
   }
 
@@ -257,8 +282,11 @@
       // Copy buttons
       initCopyButtons();
       
-      // Install guide toggle
-      initInstallGuide();
+      // Quick start toggle
+      initQuickStart();
+      
+      // FAQ accordion
+      initFAQs();
       
       // Animate sky background gradient
       const skyBg = document.querySelector('.hero-bg-sky');
