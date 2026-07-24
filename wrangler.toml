@@ -1,0 +1,54 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# ForgeLM — Cloudflare Wrangler Configuration
+# ═══════════════════════════════════════════════════════════════════════════
+
+name = "forgellm"
+main = "worker.js"
+compatibility_date = "2025-07-01"
+compatibility_flags = ["nodejs_compat"]
+
+# ─── Static Assets ─────────────────────────────────────────────────────────
+# Serves files from ./src/ (index.html, styles.css, app.js) automatically.
+# The Worker only handles /api/* routes — Cloudflare serves static files.
+assets = { directory = "./src", binding = "ASSETS" }
+
+# ─── Environment Variables ─────────────────────────────────────────────────
+# OLLAMA_HOST: The URL of your Ollama instance.
+#
+# If using Cloudflare Tunnel (recommended):
+#   Set this to your tunnel hostname, e.g. "https://ollama.your-domain.com"
+#
+# If running locally for testing:
+#   Set this to "http://localhost:11434"
+#
+# For production, use `wrangler secret put OLLAMA_HOST` or set via Cloudflare
+# Dashboard > Workers & Pages > forgellm > Variables.
+[vars]
+OLLAMA_HOST = "http://ollama.internal:11434"
+
+# ─── Environments ──────────────────────────────────────────────────────────
+# You can add preview/production environments here.
+
+# [env.production]
+# vars = { OLLAMA_HOST = "https://ollama.your-domain.com" }
+
+# [env.preview]
+# vars = { OLLAMA_HOST = "https://ollama-preview.your-domain.com" }
+
+# ─── Usage Notes ───────────────────────────────────────────────────────────
+#
+# Deploy:
+#   npm run deploy
+#
+# Development:
+#   npm run dev     (runs wrangler dev for local testing)
+#
+# Secrets:
+#   wrangler secret put OLLAMA_HOST
+#
+# Tunnel setup (on your VPS):
+#   cloudflared tunnel create ollama-tunnel
+#   cloudflared tunnel route dns ollama-tunnel ollama.your-domain.com
+#   cloudflared tunnel run ollama-tunnel
+#
+# See docs/TUNNEL.md for detailed instructions.

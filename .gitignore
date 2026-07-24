@@ -1,0 +1,35 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# ForgeLM — .gitignore
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Wrangler / Cloudflare
+.wrangler/
+dist/
+worker-build/
+*.env
+*.env.local
+.vscode/settings.json
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+logs/
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+
+# Temp
+tmp/
+temp/

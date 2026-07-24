@@ -1,0 +1,26 @@
+{
+  "name": "forgellm",
+  "version": "1.0.0",
+  "description": "⚒️ ForgeLM — Your AI-powered coding companion. Chat with LLMs on your own infrastructure.",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "logs": "wrangler tail",
+    "secret:ollama": "wrangler secret put OLLAMA_HOST",
+    "tunnel": "cloudflared tunnel run forgellm-ollama"
+  },
+  "keywords": [
+    "ollama",
+    "ai",
+    "coding",
+    "assistant",
+    "cloudflare",
+    "workers"
+  ],
+  "author": "Aditya (github.com/Ad-i7ya)",
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
