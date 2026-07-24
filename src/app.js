@@ -454,6 +454,7 @@ function isNearBottom() {
 }
 
 function smartScroll() {
+  if (!state.settings.smartScroll) return;
   if (!isNearBottom()) return;
   requestAnimationFrame(() => {
     dom.chatContainer.scrollTop = dom.chatContainer.scrollHeight;
@@ -660,6 +661,15 @@ function handleKeydown(e) {
 
   // Enter to send (Shift+Enter for newline)
   if (e.key === "Enter" && !e.shiftKey) {
+    if (!state.settings.enterToSend) {
+      // Insert newline at cursor
+      const start = dom.input.selectionStart;
+      const val = dom.input.value;
+      dom.input.value = val.slice(0, start) + "\n" + val.slice(dom.input.selectionEnd);
+      dom.input.selectionStart = dom.input.selectionEnd = start + 1;
+      handleInput();
+      return;
+    }
     e.preventDefault();
     sendMessage();
   }
@@ -750,12 +760,23 @@ function closeCmdPalette() {
   dom.input.focus();
 }
 
+let cmdPaletteSelectedIndex = 0;
+
 function filterCmdPalette() {
   const query = dom.cmdPaletteInput.value.toLowerCase().trim();
+  let index = 0;
+  let firstVisible = -1;
   dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item").forEach((item) => {
     const label = item.querySelector(".cmd-label").textContent.toLowerCase();
-    item.style.display = !query || label.includes(query) ? "flex" : "none";
+    const visible = !query || label.includes(query);
+    item.style.display = visible ? "flex" : "none";
+    item.classList.remove("selected");
+    if (visible && firstVisible === -1) firstVisible = index;
+    index++;
   });
+  cmdPaletteSelectedIndex = firstVisible;
+  const selected = dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item")[firstVisible];
+  if (selected) selected.classList.add("selected");
 }
 
 function executeCmdPaletteAction(action) {
@@ -927,14 +948,29 @@ function init() {
   if (dom.cmdPaletteInput) {
     dom.cmdPaletteInput.addEventListener("input", filterCmdPalette);
     dom.cmdPaletteInput.addEventListener("keydown", (e) => {
+      const items = [...dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item")];
+      const visible = items.filter((i) => i.style.display !== "none");
       if (e.key === "Escape") {
         closeCmdPalette();
         return;
       }
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const dir = e.key === "ArrowDown" ? 1 : -1;
+        const curIdx = visible.indexOf(items[cmdPaletteSelectedIndex]);
+        const nextIdx = (curIdx + dir + visible.length) % visible.length;
+        items.forEach((i) => i.classList.remove("selected"));
+        const next = visible[nextIdx];
+        if (next) {
+          next.classList.add("selected");
+          cmdPaletteSelectedIndex = items.indexOf(next);
+        }
+        return;
+      }
       if (e.key === "Enter") {
-        const visible = dom.cmdPaletteResults.querySelector(".cmd-palette-item[style*='flex'], .cmd-palette-item:not([style*='display: none'])");
-        if (visible) {
-          executeCmdPaletteAction(visible.dataset.action);
+        const selected = items[cmdPaletteSelectedIndex];
+        if (selected && selected.style.display !== "none") {
+          executeCmdPaletteAction(selected.dataset.action);
         }
       }
     });
@@ -950,6 +986,16 @@ function init() {
     item.addEventListener("click", () => {
       executeCmdPaletteAction(item.dataset.action);
     });
+  });
+
+  // Arrow key navigation in cmd palette results
+  dom.cmdPaletteResults.addEventListener("mouseover", (e) => {
+    const item = e.target.closest(".cmd-palette-item");
+    if (item) {
+      dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item").forEach((i) => i.classList.remove("selected"));
+      item.classList.add("selected");
+      cmdPaletteSelectedIndex = [...dom.cmdPaletteResults.querySelectorAll(".cmd-palette-item")].indexOf(item);
+    }
   });
 
   // Global keyboard shortcuts
