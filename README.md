@@ -1,18 +1,28 @@
-# ForgeLM ⚒️
+# ForgeLLM ⚒️
 
 **The free coding agent that runs on your infrastructure.**
 
-ForgeLM is a completely free, open-source coding assistant that connects to your own Ollama models. Use it via **CLI** in your terminal or through the **Web** interface — no subscriptions, no API keys, no lock-in.
+ForgeLLM is a completely free, open-source coding assistant that connects to your own Ollama models. Use it via **CLI** in your terminal or through the **Web** interface — no subscriptions, no API keys, no lock-in.
 
 [![GitHub stars](https://img.shields.io/github/stars/Ad-i7ya/forgellm?style=social)](https://github.com/Ad-i7ya/forgellm)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
+## We make coding 100% free
+
+No subscriptions, no API keys. The best open-source models.
+
+```bash
+npm install -g forgellm
+```
+
+---
+
 ## Features
 
 - **🧠 Your models, your infra** — Runs on Ollama. Deploy any open-source model on your VPS.
-- **🖥️ CLI & Web** — Code from the terminal with `forgelm` or use the web interface.
+- **🖥️ CLI & Web** — Code from the terminal with `forgellm` or use the web interface.
 - **🛠️ 7 specialized tools** — `read_file`, `write_file`, `edit_file`, `run_command`, `list_files`, `web_search`, `spawn_agent`.
 - **📡 Streaming responses** — Real-time token-by-token output.
 - **🔒 100% private** — Your code never leaves your infrastructure.
@@ -25,7 +35,7 @@ ForgeLM is a completely free, open-source coding assistant that connects to your
 
 ```bash
 ollama serve
-ollama pull nemotron-3-super  # or your model of choice
+ollama pull nemotron-3-super:latest  # or your model of choice
 ```
 
 ### 2. Install the CLI
@@ -38,19 +48,26 @@ npm install -g forgellm
 
 ```bash
 cd your-project
-forgelm
+forgellm
 ```
 
 That's it. No API keys, no accounts.
 
 ## Web Interface
 
-ForgeLM also ships with a web UI served via Cloudflare Workers:
+ForgeLLM also ships with a web UI served via Cloudflare Workers:
 
 - **`/`** — CLI landing page
 - **`/cli`** — CLI landing page with install guide
 - **`/web`** — Web app builder interface
 - **`/chat`** — Direct chat with your Ollama models
+
+## Default Model
+
+ForgeLLM defaults to **nemotron-3-super:latest**. You can switch to any other model installed on your Ollama instance:
+
+- In the web chat, use the model selector in the header.
+- In the CLI, use `/models` to list and `/model <name>` to switch.
 
 ## Architecture
 
@@ -101,9 +118,9 @@ ForgeLM also ships with a web UI served via Cloudflare Workers:
 
 | Command | Description |
 |---------|-------------|
-| `forgelm` | Start interactive chat |
-| `forgelm --model <name>` | Use a specific model |
-| `forgelm --host <url>` | Custom Ollama URL |
+| `forgellm` | Start interactive chat |
+| `forgellm --model <name>` | Use a specific model |
+| `forgellm --host <url>` | Custom Ollama URL |
 | `/help` | Show available commands |
 | `/models` | List available models |
 | `/model <name>` | Switch model |
@@ -115,6 +132,7 @@ ForgeLM also ships with a web UI served via Cloudflare Workers:
 - **Frontend:** Vanilla HTML/CSS/JS (no frameworks)
 - **Backend:** Cloudflare Workers
 - **AI:** Ollama (self-hosted)
+- **Default model:** nemotron-3-super:latest
 - **Tunnel:** Cloudflare Tunnel (optional)
 - **CLI:** Node.js + readline
 

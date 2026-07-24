@@ -117,13 +117,15 @@ async function main() {
   console.log(chalk.green(`✓ Connected to ${chalk.cyan(config.host)}`));
   console.log();
 
-  // Select model
+  // Select model — default to nemotron-3-super:latest
   let model = flags.model || process.env.FORGELM_MODEL || null;
   if (!model) {
     const nemotron = config.models.find((m) =>
+      m.name.toLowerCase().includes("nemotron-3-super")
+    ) || config.models.find((m) =>
       m.name.toLowerCase().includes("nemotron")
     );
-    model = nemotron ? nemotron.name : config.models[0]?.name;
+    model = nemotron ? nemotron.name : "nemotron-3-super:latest";
   }
 
   console.log(`${chalk.gray(model)} ${chalk.gray("·")} ${chalk.gray(process.cwd().split("/").pop() || "~")}`);

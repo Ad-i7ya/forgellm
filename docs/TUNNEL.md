@@ -1,6 +1,6 @@
-# 🔒 Cloudflare Tunnel Setup
+# 🔒 Cloudflare Tunnel Setup for ForgeLLM
 
-This guide explains how to connect your VPS Ollama instance to Cloudflare Workers securely using Cloudflare Tunnel — **without opening any ports** on your VPS.
+This guide explains how to connect your VPS Ollama instance to ForgeLLM via Cloudflare Tunnel — **without opening any ports** on your VPS.
 
 ## Why Cloudflare Tunnel?
 
@@ -53,7 +53,7 @@ This opens a browser window asking you to log in to your Cloudflare account. Sel
 cloudflared tunnel create forgellm-ollama
 ```
 
-This creates a tunnel and generates a credentials file at `~/.cloudflared/<tunnel-id>.json`. Note the tunnel ID — you'll need it.
+This creates a tunnel and generates a credentials file at `~/.cloudflared/<tunnel-id>.json`. Note the tunnel ID — you will need it.
 
 ## Step 4: Configure DNS
 
@@ -151,17 +151,17 @@ curl http://localhost:11434/api/tags
 curl http://your-vps-ip:11434/api/tags  # Should timeout or refuse
 ```
 
-## Step 8: Update ForgeLM Configuration
+## Step 8: Update ForgeLLM Configuration
 
-Now set your OLLAMA_HOST in ForgeLM:
+Now set your OLLAMA_HOST in ForgeLLM:
 
 ```bash
-# From your local machine (where ForgeLM project is)
+# From your local machine (where ForgeLLM project is)
 npx wrangler secret put OLLAMA_HOST
 # Enter: https://ollama.your-domain.com
 ```
 
-Re-deploy ForgeLM:
+Re-deploy ForgeLLM:
 
 ```bash
 npm run deploy
@@ -197,12 +197,12 @@ curl http://localhost:11434/api/tags
 ollama serve
 ```
 
-### ForgeLM shows "Failed to connect"
+### ForgeLLM shows "Failed to connect"
 ```bash
 # Test the tunnel endpoint directly
 curl https://ollama.your-domain.com/api/tags
 
-# If this works but ForgeLM doesn't, check your Worker logs:
+# If this works but ForgeLLM doesn't, check your Worker logs:
 npm run logs
 ```
 
@@ -222,4 +222,4 @@ If you don't have a domain, you can use `cloudflared tunnel --url` for a quick t
 cloudflared tunnel --url http://localhost:11434
 ```
 
-This creates a temporary `*.trycloudflare.com` URL. Update your ForgeLM Worker's `OLLAMA_HOST` to this temporary URL for testing.
+This creates a temporary `*.trycloudflare.com` URL. Update your ForgeLLM Worker's `OLLAMA_HOST` to this temporary URL for testing.

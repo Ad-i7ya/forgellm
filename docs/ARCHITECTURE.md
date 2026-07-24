@@ -1,8 +1,8 @@
-# 🏗️ ForgeLM Architecture
+# 🏗️ ForgeLLM Architecture
 
 ## Overview
 
-ForgeLM is a serverless AI chat application that connects a browser-based chat interface to locally-hosted LLMs via Ollama, using Cloudflare's edge network as a secure proxy layer.
+ForgeLLM is a serverless AI coding agent that connects a browser-based chat interface to locally-hosted LLMs via Ollama, using Cloudflare's edge network as a secure proxy layer.
 
 ## System Design
 
@@ -11,7 +11,7 @@ ForgeLM is a serverless AI chat application that connects a browser-based chat i
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                           Internet                                        │
-│  ┌──────────┐    ┌──────────────────┐    ┌────────────────────────┐     │
+│  ┌──────────    ┌──────────────────┐    ┌────────────────────────┐     │
 │  │ Browser  │───▶│ Cloudflare Edge  │───▶│ Cloudflare Worker     │     │
 │  │ (User)   │◀───│ (CDN + Proxy)    │◀───│ (forgellm)            │     │
 │  └──────────┘    └──────────────────┘    └────────────────────────┘     │
@@ -25,7 +25,7 @@ ForgeLM is a serverless AI chat application that connects a browser-based chat i
 │                                      Cloudflare Tunnel                   │
 │                                      (private, outbound-only)            │
 │                                                  │                       │
-│                                          ┌───────┴────────┐             │
+│                                          ───────┴────────┐             │
 │                                          │   Your VPS     │             │
 │                                          │  ┌──────────┐  │             │
 │                                          │  │ Ollama   │  │             │
@@ -45,20 +45,20 @@ ForgeLM is a serverless AI chat application that connects a browser-based chat i
 1. **User sends a message** → Browser sends POST to `https://forgellm.workers.dev/api/chat`
 2. **Cloudflare Worker receives request** → Adds CORS headers, forwards to `OLLAMA_HOST/api/chat` with `stream: true`
 3. **Cloudflare Tunnel** → Routes the request privately to your VPS's Ollama instance (port 11434)
-4. **Ollama processes** → Nemotron-3-super (or selected model) generates a response
+4. **Ollama processes** → `nemotron-3-super:latest` (or selected model) generates a response
 5. **Streaming response** → Ollama sends NDJSON chunks back through the tunnel
 6. **Worker proxies stream** → Passes the `ReadableStream` directly back to the browser
-7. **Browser renders** → `app.js` parses each JSON chunk, updates the message UI in real-time with markdown rendering
+7. **Browser renders** → `app.js` parses each JSON chunk, updates the message UI in real-time
 
 ## Key Design Decisions
 
-### Why Cloudflare Workers + Tunnel instead of exposing Ollama directly?
+### Why Cloudflare Tunnel?
 
 | Approach | Security | Latency | Complexity |
 |----------|----------|---------|------------|
 | Ollama directly exposed | ❌ No auth, open port | ✅ Direct | ✅ Simple |
 | Cloudflare Tunnel | ✅ No open ports, DDoS protection | ✅ Edge caching | 🟢 Medium |
-| VPN | ✅ Encrypted | ❌ Extra hop | ❌ Complex |
+| VPN | ✅ Encrypted | ❌ Extra hop |  Complex |
 | SSH tunnel | ✅ Encrypted | ❌ No auto-reconnect | ❌ Fragile |
 
 ### Why a single Worker for both frontend and API?
@@ -92,9 +92,9 @@ ForgeLM is a serverless AI chat application that connects a browser-based chat i
 │  ┌─────────────────────────────────────┐│   │
 │  │ DOM Management                      ││   │
 │  │  ├─ renderMessages()                ││   │
-│  │  ├─ appendMessageDOM()              ││   │
-│  │  ├─ updateStreamingContent()        ││   │
-│  │  ├─ renderConversationList()        ││   │
+│  │  ─ appendMessageDOM()              ││   │
+│  │  ─ updateStreamingContent()        ││   │
+│  │  ─ renderConversationList()        ││   │
 │  │  └─ showWelcome()                   ││   │
 │  └─────────────────────────────────────┘│   │
 │                                         │   │
@@ -106,8 +106,8 @@ ForgeLM is a serverless AI chat application that connects a browser-based chat i
 │                                         │   │
 │  ┌─────────────────────────────────────┐│   │
 │  │ Markdown Parser                     ││   │
-│  │  ├─ parseMarkdown()                 ││   │
-│  │  ├─ Syntax highlighting (pre tags)  ││   │
+│  │  ─ parseMarkdown()                 ││   │
+│  │  ─ Syntax highlighting (pre tags)  ││   │
 │  │  └─ Code copy button                ││   │
 │  └─────────────────────────────────────┘│   │
 └─────────────────────────────────────────┘   │
@@ -150,7 +150,7 @@ worker.js
 └─ handleApiRequest(request, url, env)
     ├─ Builds target URL from OLLAMA_HOST
     ├─ Strips hop-by-hop headers
-    ├─ Forwards request body
+    ─ Forwards request body
     ├─ Returns streaming response (ReadableStream passthrough)
     └─ Error handling → JSON error response (502)
 ```
@@ -158,7 +158,7 @@ worker.js
 ## Security Architecture
 
 ```
-┌──────────────────────────────────────────────┐
+┌──────────────────────────────────────────────
 │               Security Layers                 │
 ├──────────────────────────────────────────────┤
 │ 1. Cloudflare WAF (Web Application Firewall) │
@@ -185,6 +185,14 @@ worker.js
   - Model quantization (Q4_K_M uses less VRAM)
   - Multiple GPU setup
   - Request queuing in the Worker
+
+## Default Model
+
+ForgeLLM defaults to `nemotron-3-super:latest`. Configure it via:
+
+- `wrangler.toml` / `wrangler secret put OLLAMA_HOST`
+- CLI: `FORGELM_MODEL=nemotron-3-super:latest forgellm`
+- Web chat: model selector in the header
 
 ## Future Enhancements
 

@@ -546,6 +546,13 @@ code {
   min-height: 360px;
 }
 
+/* ─── Grid utilities ─────────────────────────────────────────────── */
+.grid {
+  display: grid;
+}
+
+/* ─── Hero sizing ──────────────────────────────────────────────── */
+.text-\\[40px\\] { font-size: 40px; }
 
 /* ─── Brightness & Contrast ───────────────────────────────────────── */
 .brightness-\\[0\\.62\\] { filter: brightness(0.62); }
