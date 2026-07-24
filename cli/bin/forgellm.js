@@ -96,59 +96,38 @@ ${B("Examples:")}
 async function main() {
   console.clear();
 
-  // Show splash
-  console.log(`
-${chalk.hex("#6363f1").bold("  ⚒️  ForgeLM CLI")} ${chalk.gray("v1.0.0")}
-${chalk.gray("  ─────────────────────────────────────────────")}
-${chalk.gray("  Chat with AI models on your own infrastructure")}
-${chalk.gray("  Type")} ${chalk.cyan("/help")} ${chalk.gray("for commands,")} ${chalk.cyan("Ctrl+C")} ${chalk.gray("to quit")}
-${chalk.gray("  ─────────────────────────────────────────────")}
-`);
+  // Show splash — Freebuff-style
+  console.log(`\n${chalk.hex("#6363f1").bold("◆ forgelm")}`);
+  console.log(`${chalk.gray("npm install -g forgellm")}`);
+  console.log();
 
   // Load config
   const config = await loadConfig(flags.host);
   if (!config) {
-    console.log(
-      chalk.red("\n  ✗ Could not connect to Ollama.\n") +
-        chalk.yellow(
-          "    Make sure Ollama is running or set OLLAMA_HOST environment variable.\n"
-        )
-    );
+    console.log(chalk.red("✗ Could not connect to Ollama."));
+    console.log(chalk.yellow("  Make sure Ollama is running or set OLLAMA_HOST."));
     process.exit(1);
   }
 
   if (!config.connected) {
-    console.log(
-      chalk.yellow(
-        `\n  ⚠  Connected to Ollama server but no models found.\n`
-      )
-    );
+    console.log(chalk.yellow(`⚠  Connected to Ollama server but no models found.`));
   }
 
   // Show connection info
-  console.log(
-    `  ${chalk.green("✓")} Connected to ${chalk.cyan(config.host)}`
-  );
-  console.log(
-    `  ${chalk.blue("◉")} Available models: ${chalk.white(
-      config.models.map((m) => m.name).join(", ")
-    )}`
-  );
+  console.log(chalk.green(`✓ Connected to ${chalk.cyan(config.host)}`));
   console.log();
 
   // Select model
   let model = flags.model || process.env.FORGELM_MODEL || null;
   if (!model) {
-    // Prefer nemotron, else use first model
     const nemotron = config.models.find((m) =>
       m.name.toLowerCase().includes("nemotron")
     );
-    model = nemotron ? nemotron.name : config.models[0].name;
+    model = nemotron ? nemotron.name : config.models[0]?.name;
   }
 
-  console.log(
-    `  ${chalk.magenta("◆")} Using model: ${chalk.bold(model)}\n`
-  );
+  console.log(`${chalk.gray(model)} ${chalk.gray("·")} ${chalk.gray(process.cwd().split("/").pop() || "~")}`);
+  console.log();
 
   // ── Interactive Chat Loop ─────────────────────────────────────────────
   const messages = [];
@@ -161,7 +140,7 @@ ${chalk.gray("  ─────────────────────�
 
   async function chatLoop() {
     rl.question(
-      chalk.hex("#6363f1")("  You › ") + chalk.gray(""),
+      chalk.hex("#6363f1")("› "),
       async (input) => {
         const trimmed = input.trim();
 
@@ -230,7 +209,7 @@ ${chalk.gray("  ─────────────────────�
         messages.push({ role: "user", content: trimmed });
 
         // Show thinking indicator
-        process.stdout.write(chalk.gray("  ⚒️  Thinking..."));
+        process.stdout.write(chalk.gray("└ analyzing request..."));
 
         try {
           // Stream the response with tool support
@@ -247,10 +226,9 @@ ${chalk.gray("  ─────────────────────�
             if (firstChunk) {
               process.stdout.clearLine(0);
               process.stdout.cursorTo(0);
-              process.stdout.write(chalk.hex("#6363f1")("  ⚒️  ") + chalk.gray(""));
+              process.stdout.write(chalk.hex("#54a967")("└ ") + chalk.gray(""));
               firstChunk = false;
             }
-            // Check if this chunk contains a tool call
             if (typeof chunk === "object" && chunk.tool_calls) {
               toolCalls = chunk.tool_calls;
             } else if (typeof chunk === "string") {
@@ -299,7 +277,7 @@ ${chalk.gray("  ─────────────────────�
                 process.stdout.clearLine(0);
                 process.stdout.cursorTo(0);
                 process.stdout.write(
-                  chalk.hex("#6363f1")("  ⚒️  ") + chalk.gray("")
+                  chalk.hex("#54a967")("└ ") + chalk.gray("")
                 );
                 firstChunk = false;
               }
