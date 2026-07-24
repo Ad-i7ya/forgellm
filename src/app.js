@@ -616,7 +616,7 @@ async function sendMessage() {
     state.abortController = null;
     dom.sendBtn.classList.remove("hidden");
     dom.stopBtn.classList.add("hidden");
-    dom.sendBtn.disabled = false;
+    handleInput(); // sync button state with (now-empty) input
     dom.input.focus();
     saveConversations();
   }
