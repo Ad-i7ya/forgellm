@@ -15,16 +15,23 @@
   }
 
   // ─── Scroll / load reveal for elements with hidden inline styles ───
+  function revealElement(el) {
+    el.style.opacity = '1';
+    if (/translateY\s*\(/i.test(el.style.transform || '')) {
+      el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/, 'translateY(0)');
+    } else if (/\btransform:\s*none\b/i.test(el.getAttribute('style') || '')) {
+      el.style.transform = 'translateY(0)';
+    }
+  }
+
   function initReveals() {
     const els = Array.from(document.querySelectorAll('[style*="opacity:0"], [style*="opacity: 0"]'));
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const el = entry.target;
-          el.style.opacity = '1';
-          if (/translateY\s*\(/i.test(el.style.transform || '')) {
-            el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/, 'translateY(0)');
-          }
+          el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+          revealElement(el);
           observer.unobserve(el);
         }
       });
@@ -38,10 +45,7 @@
       if (!el.style.opacity) el.style.opacity = '0';
       setTimeout(() => {
         el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-        el.style.opacity = '1';
-        if (/translateY\s*\(/i.test(el.style.transform || '')) {
-          el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/, 'translateY(0)');
-        }
+        revealElement(el);
       }, 100 + i * 60);
     });
   }
