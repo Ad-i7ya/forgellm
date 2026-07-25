@@ -32,8 +32,15 @@
 .send-btn { width: 32px; height: 32px; border-radius: 8px; border: none; background: #6363f1; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; flex-shrink: 0; }
 .send-btn:disabled { opacity: 0.3; cursor: default; }
 .send-btn:hover:not(:disabled) { opacity: 0.85; }
-.model-select { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.70); border: 1px solid rgba(255,255,255,0.10); border-radius: 6px; padding: 4px 8px; font-size: 12px; outline: none; cursor: pointer; }
-.model-select:hover { border-color: rgba(255,255,255,0.20); }
+.model-select { background: #0a0a0b; color: #ffffff; border: 1px solid rgba(255,255,255,0.20); border-radius: 6px; padding: 5px 10px; font-size: 12px; outline: none; cursor: pointer; min-width: 180px; }
+.model-select:hover { border-color: rgba(255,255,255,0.35); }
+.model-select option { background: #0a0a0b; color: #ffffff; padding: 4px; }
+.model-select:focus { border-color: rgba(255,255,255,0.40); box-shadow: 0 0 0 2px rgba(255,255,255,0.08); }
+.selected-model-status { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: rgba(255,255,255,0.55); }
+.selected-model-dot { width: 7px; height: 7px; border-radius: 50%; }
+.selected-model-dot.online { background: #54a967; box-shadow: 0 0 6px rgba(84,169,103,0.7); }
+.selected-model-dot.loading { background: #eab308; }
+.selected-model-dot.offline { background: #ef4444; }
 </style>
 </head>
 <body>
@@ -56,6 +63,10 @@
       <select id="chat-model-select" class="model-select">
         <option value="">Loading models...</option>
       </select>
+      <span id="selected-model-status" class="selected-model-status hidden">
+        <span id="selected-model-dot" class="selected-model-dot loading"></span>
+        <span id="selected-model-text">Loading...</span>
+      </span>
       <button id="new-chat-btn" class="text-white/40 hover:text-white transition-colors text-[12px] px-2 py-1 rounded-md hover:bg-white/5" title="New chat">+ New</button>
     </div>
   </div>
@@ -99,6 +110,7 @@
     streaming: false,
     abortController: null,
     models: [],
+    connected: false,
   };
 
   const DEFAULT_MODEL = 'nemotron-3-super:latest';
@@ -107,6 +119,32 @@
     dom.modelDot.className = 'model-status-dot ' + status;
     dom.modelText.textContent = text || status;
     if (dom.statusInfo) dom.statusInfo.textContent = text || '';
+  }
+
+  function updateSelectedModelStatus() {
+    const selected = dom.modelSelect.value;
+    const dot = document.getElementById('selected-model-dot');
+    const text = document.getElementById('selected-model-text');
+    const wrap = document.getElementById('selected-model-status');
+    if (!wrap || !dot || !text) return;
+    if (!selected) {
+      wrap.classList.add('hidden');
+      return;
+    }
+    wrap.classList.remove('hidden');
+    if (!state.connected) {
+      dot.className = 'selected-model-dot offline';
+      text.textContent = 'Offline';
+      return;
+    }
+    const loaded = state.models.some(m => m.name === selected);
+    if (loaded) {
+      dot.className = 'selected-model-dot online';
+      text.textContent = 'Online';
+    } else {
+      dot.className = 'selected-model-dot loading';
+      text.textContent = 'Loading...';
+    }
   }
 
 
@@ -128,6 +166,7 @@
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
       state.models = data.models || [];
+      state.connected = true;
 
       dom.modelSelect.innerHTML = state.models.map(m =>
         '<option value="' + m.name + '">' + m.name + '</option>'
@@ -138,9 +177,12 @@
       dom.modelSelect.value = preferred ? preferred.name : (state.models[0] && state.models[0].name);
 
       setModelStatus('connected', state.models.length + ' models available');
+      updateSelectedModelStatus();
     } catch (e) {
+      state.connected = false;
       setModelStatus('disconnected', 'Ollama offline');
       dom.modelSelect.innerHTML = '<option value="">No models</option>';
+      updateSelectedModelStatus();
     }
   }
 
@@ -306,6 +348,7 @@
     dom.input.addEventListener('input', handleInput);
     dom.input.addEventListener('keydown', handleKeydown);
     dom.newChatBtn.addEventListener('click', newChat);
+    dom.modelSelect.addEventListener('change', updateSelectedModelStatus);
 
     document.addEventListener('keydown', function(e) {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === 'n' || e.key === 'N')) {
