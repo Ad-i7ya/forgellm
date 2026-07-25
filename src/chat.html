@@ -43,6 +43,11 @@
 .selected-model-dot.online { background: #54a967; box-shadow: 0 0 6px rgba(84,169,103,0.7); }
 .selected-model-dot.loading { background: #eab308; }
 .selected-model-dot.offline { background: #ef4444; }
+.skills-bar { display: flex; gap: 8px; overflow-x: auto; padding: 8px 0 4px; scrollbar-width: none; }
+.skills-bar::-webkit-scrollbar { display: none; }
+.skill-chip { flex: 0 0 auto; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); padding: 5px 12px; border-radius: 999px; font-size: 11px; cursor: pointer; white-space: nowrap; transition: all 0.2s ease; }
+.skill-chip:hover { border-color: rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); }
+.skill-chip.active { background: rgba(99,99,241,0.16); border-color: rgba(99,99,241,0.55); color: #a5b4fc; font-weight: 500; }
 .thinking { display: inline-flex; align-items: center; gap: 6px; color: rgba(255,255,255,0.45); }
 .thinking-dot { width: 6px; height: 6px; border-radius: 50%; background: #54a967; animation: thinking-pulse 1.2s infinite; }
 .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
@@ -96,6 +101,7 @@
 
   <!-- Input Area -->
   <div class="chat-input-area">
+    <div class="skills-bar" id="skills-bar"></div>
     <div class="chat-input-wrapper">
       <textarea id="chat-input" placeholder="Ask anything..." rows="1"></textarea>
       <button id="send-btn" class="send-btn" disabled>
@@ -134,9 +140,45 @@
     abortController: null,
     models: [],
     connected: false,
+    activeSkill: 'Auto',
   };
 
   const DEFAULT_MODEL = 'nemotron-3-super:latest';
+
+  const FORGE_SKILLS = {
+    Auto: {
+      desc: "Default coding agent with access to all tools",
+      prompt: "You are ForgeLLM, an autonomous AI coding assistant. You have capabilities equivalent to freebuff/Codebuff: you can edit files, run bash commands, perform web research, review code, run tests, and coordinate multi-agent plans. Respect commands like /help, /new, /bash, and /init. Use user-provided context like @file mentions and knowledge.md. Answer concisely unless the user asks for detail."
+    },
+    Plan: {
+      desc: "Planner Agent for breaking down complex tasks",
+      prompt: "You are the Planner Agent. Your job is to analyze requests, break them down into step-by-step execution plans, and coordinate with other agents. Output clear, actionable lists. Do not write implementation code; only write the architectural plan and tool steps (e.g., '1. Bash: run npm init', '2. Edit: create index.js')."
+    },
+    Edit: {
+      desc: "Focused on writing and refactoring code files",
+      prompt: "You are the File Editor Agent. Focus strictly on writing, refactoring, and structuring code. Output complete, well-commented code blocks formatted for immediate insertion. Ensure you handle imports and dependencies correctly."
+    },
+    Bash: {
+      desc: "Terminal execution and environment management",
+      prompt: "You are the Bash/Terminal Agent. Your sole purpose is to provide terminal commands required to accomplish the user's goal (e.g., package installations, file manipulation, starting servers). Output commands within standard bash markdown blocks."
+    },
+    Web: {
+      desc: "Web research and documentation fetching",
+      prompt: "You are the Web Research Agent. Your job is to answer queries by providing up-to-date information, documentation references, or API endpoints. Act as if you are searching the web and synthesizing the best technical documentation solutions."
+    },
+    Review: {
+      desc: "Code review and security validation",
+      prompt: "You are the Code Review Agent. Analyze provided code for bugs, security vulnerabilities, edge cases, and performance anti-patterns. Provide strict, constructive feedback and offer optimized code solutions."
+    },
+    Test: {
+      desc: "Running tests and verifying behavior",
+      prompt: "You are the QA/Test Agent. Write robust unit and integration tests for the user's code. If given test output with failures, analyze the stack trace and explain exactly how to fix the application code."
+    },
+    Debug: {
+      desc: "Diagnosing and fixing runtime errors",
+      prompt: "You are the Debugging Agent. The user will provide error logs, stack traces, or broken code. Diagnose the root cause systematically and provide the absolute minimum code changes required to fix the error."
+    }
+  };
 
   function setModelStatus(status, text) {
     dom.modelDot.className = 'model-status-dot ' + status;
@@ -284,10 +326,15 @@
     var fullResponse = '';
 
     try {
+      var payloadMessages = [
+        { role: 'system', content: FORGE_SKILLS[state.activeSkill].prompt },
+        { role: 'user', content: text }
+      ];
+
       var res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ model: model, messages: [{ role: 'user', content: text }], stream: true }),
+        body: JSON.stringify({ model: model, messages: payloadMessages, stream: true, options: { num_ctx: 8192 } }),
         signal: state.abortController.signal
       });
 
@@ -394,8 +441,26 @@
     });
   }
 
+  function renderSkills() {
+    const bar = document.getElementById('skills-bar');
+    if (!bar) return;
+    bar.innerHTML = '';
+    Object.keys(FORGE_SKILLS).forEach(function(skillKey) {
+      const chip = document.createElement('div');
+      chip.className = 'skill-chip' + (state.activeSkill === skillKey ? ' active' : '');
+      chip.textContent = skillKey;
+      chip.title = FORGE_SKILLS[skillKey].desc;
+      chip.addEventListener('click', function() {
+        state.activeSkill = skillKey;
+        renderSkills();
+      });
+      bar.appendChild(chip);
+    });
+  }
+
   function init() {
     loadModels();
+    renderSkills();
     setInterval(loadModels, 30000);
 
     dom.sendBtn.addEventListener('click', sendMessage);
