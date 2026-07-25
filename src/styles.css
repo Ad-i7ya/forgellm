@@ -551,6 +551,80 @@ code {
   display: grid;
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   Landing Page Animations (Freebuff-style)
+   ════════════════════════════════════════════════════════════════════ */
+
+/* ─── Reveal States ───────────────────────────────────────────────── */
+.lp-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.lp-reveal.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Hero Load Stagger ───────────────────────────────────────────── */
+.lp-gpu {
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Mountain Parallax Layers ────────────────────────────────────── */
+.lp-parallax-sky,
+.lp-parallax-hills,
+.lp-parallax-bushes {
+  will-change: transform;
+}
+
+/* ─── Pricing Bar Animation ───────────────────────────────────────── */
+.pricing-bar {
+  transition: width 1.3s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: width;
+}
+
+/* ─── Feature Card Hover Lift ─────────────────────────────────────── */
+.hover-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.9);
+}
+
+/* ─── Button Glow ─────────────────────────────────────────────────── */
+.btn-glow {
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+.btn-glow:hover {
+  box-shadow: 0 0 30px -5px rgba(84, 169, 103, 0.35);
+}
+
+/* ─── Footer Giant Text ───────────────────────────────────────────── */
+.lp-giant-text {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* ─── Reduced Motion ──────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .lp-gpu,
+  .lp-reveal,
+  .lp-giant-text,
+  .pricing-bar {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
 /* ─── Hero sizing ──────────────────────────────────────────────── */
 .text-\\[40px\\] { font-size: 40px; }
 
