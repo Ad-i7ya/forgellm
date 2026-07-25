@@ -55,19 +55,28 @@ export default {
     }
 
     // ── Non-API routes → served as static HTML pages ────────────────────
-    switch (url.pathname) {
-      case "/cli":
-      case "/cli/":
-        return env.ASSETS.fetch(new Request(new URL("/cli.html", url.origin), request));
-      case "/web":
-      case "/web/":
-        return env.ASSETS.fetch(new Request(new URL("/web.html", url.origin), request));
-      case "/chat":
-      case "/chat/":
-        return env.ASSETS.fetch(new Request(new URL("/chat.html", url.origin), request));
-      default:
-        return env.ASSETS.fetch(request);
+    const routeMap = {
+      "/": "/index.html",
+      "/index": "/index.html",
+      "/cli": "/cli.html",
+      "/web": "/web.html",
+      "/chat": "/chat.html",
+      "/desktop": "/desktop.html",
+      "/cloud": "/cloud.html",
+      "/blog": "/blog.html",
+      "/live": "/live.html",
+      "/privacy-policy": "/privacy.html",
+      "/terms-of-service": "/terms.html",
+    };
+
+    const normalizedPath = url.pathname.replace(/\/$/, "");
+    const target = routeMap[normalizedPath];
+
+    if (target) {
+      return env.ASSETS.fetch(new Request(new URL(target, url.origin), request));
     }
+
+    return env.ASSETS.fetch(request);
   },
 };
 

@@ -275,6 +275,70 @@
     });
   }
 
+  /* ─── Mobile products menu ───────────────────────────────────────── */
+  function initMobileMenu() {
+    const btn = document.querySelector('button[aria-haspopup="menu"]');
+    const menu = document.getElementById('mobile-products-menu');
+    if (!btn || !menu) return;
+
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+      menu.classList.toggle('hidden');
+      const chevron = btn.querySelector('.lucide-chevron-down');
+      if (chevron) chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+    });
+
+    // Close on outside click
+    document.addEventListener('click', (e) => {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        btn.setAttribute('aria-expanded', 'false');
+        menu.classList.add('hidden');
+        const chevron = btn.querySelector('.lucide-chevron-down');
+        if (chevron) chevron.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+
+  /* ─── Hero product tabs on home page ──────────────────────────────── */
+  function initHeroTabs() {
+    const hero = document.querySelector('main > section:first-of-type .relative.z-30');
+    if (!hero) return;
+    const tabs = hero.querySelectorAll('.flex.items-center button.rounded-full');
+    if (!tabs.length) return;
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const label = tab.textContent.trim().toLowerCase();
+        const routes = { cli: '/cli', desktop: '/desktop', web: '/web', cloud: '/cloud', chat: '/chat' };
+        if (routes[label]) {
+          window.location.href = routes[label];
+        }
+      });
+    });
+  }
+
+  /* ─── Expandable install / quick-start dropdowns ──────────────────── */
+  function initExpandables() {
+    document.querySelectorAll('button[aria-expanded]').forEach(btn => {
+      // Skip mobile menu (handled above) and FAQ (handled separately)
+      if (btn.hasAttribute('aria-haspopup')) return;
+      if (btn.closest('.faq-item')) return;
+
+      // Install guide / quick start buttons
+      const panel = btn.nextElementSibling;
+      if (!panel) return;
+
+      btn.addEventListener('click', () => {
+        const isOpen = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', String(!isOpen));
+        panel.style.display = isOpen ? 'none' : 'block';
+        const chevron = btn.querySelector('.lucide-chevron-down');
+        if (chevron) chevron.style.transform = isOpen ? 'rotate(0deg)' : 'rotate(180deg)';
+      });
+    });
+  }
+
   /* ─── Init ───────────────────────────────────────────────────────── */
   whenReady(() => {
     initHeroReveal();
@@ -286,5 +350,8 @@
     initCopyButtons();
     initFAQs();
     initSmoothScroll();
+    initMobileMenu();
+    initHeroTabs();
+    initExpandables();
   });
 })();
