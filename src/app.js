@@ -242,7 +242,7 @@
 
   /* ─── FAQ accordion ──────────────────────────────────────────────── */
   function initFAQs() {
-    document.querySelectorAll('.faq-trigger, .faq-item > button').forEach(trigger => {
+    document.querySelectorAll('.faq-trigger, .faq-item > button, .faq-list button, .faq-section button').forEach(trigger => {
       if (trigger.dataset.faqBound) return;
       trigger.dataset.faqBound = '1';
       trigger.addEventListener('click', () => {

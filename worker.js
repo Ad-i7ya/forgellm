@@ -65,6 +65,12 @@ export default {
       "/cloud": "/cloud.html",
       "/blog": "/blog.html",
       "/live": "/live.html",
+      "/comparisons": "/comparisons.html",
+      "/guides": "/guides.html",
+      "/community": "/community.html",
+      "/research": "/research.html",
+      "/engineering": "/engineering.html",
+      "/launches": "/launches.html",
       "/privacy-policy": "/privacy.html",
       "/terms-of-service": "/terms.html",
     };

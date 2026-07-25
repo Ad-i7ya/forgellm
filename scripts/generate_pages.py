@@ -1,111 +1,61 @@
 #!/usr/bin/env python3
-"""Generate placeholder pages for missing routes using the shared header/footer from index.html."""
+"""Generate placeholder pages for footer links."""
+import os
 
-import re
-from pathlib import Path
-
-ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "src"
-INDEX = SRC / "index.html"
-
-assert INDEX.exists(), f"{INDEX} not found"
-
-index_html = INDEX.read_text(encoding="utf-8")
-
-# Find the header and footer wrappers.
-# We treat everything from <body> up to and including </header> as the header,
-# and everything from the footer section (the "We just killed paid coding agents" section)
-# to the closing tags as the footer.
-header_match = re.search(r"(<body[^>]*>.*?)(</header>)", index_html, re.DOTALL)
-footer_match = re.search(r"(<section[^>]*class=\"relative overflow-hidden bg-black\">.*?)(</body>)", index_html, re.DOTALL)
-
-if not header_match:
-    raise RuntimeError("Could not find header in index.html")
-if not footer_match:
-    raise RuntimeError("Could not find footer in index.html")
-
-header = header_match.group(0)
-footer = footer_match.group(1)
+SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'src')
 
 PAGES = {
-    "desktop.html": {
-        "title": "ForgeLLM Desktop — free desktop coding agent (beta)",
-        "heading": "ForgeLLM Desktop",
-        "subheading": "A free desktop coding agent, right on your machine.",
-        "desc": "Local-first, privacy-focused, and 100% free. Coming soon.",
-    },
-    "cloud.html": {
-        "title": "ForgeLLM Cloud — free cloud coding agent (beta)",
-        "heading": "ForgeLLM Cloud",
-        "subheading": "A free cloud sandbox + coding agent for any GitHub repo.",
-        "desc": "Build, preview, and deploy in the cloud without a credit card. Coming soon.",
-    },
-    "blog.html": {
-        "title": "ForgeLLM Blog — free AI coding agent news, guides and comparisons",
-        "heading": "ForgeLLM Blog",
-        "subheading": "Guides, comparisons, and updates from the ForgeLLM team.",
-        "desc": "New posts coming soon.",
-    },
-    "live.html": {
-        "title": "ForgeLLM Live — developers building with ForgeLLM right now",
-        "heading": "ForgeLLM Live",
-        "subheading": "See what the community is building with ForgeLLM right now.",
-        "desc": "Live feed coming soon.",
-    },
-    "privacy.html": {
-        "title": "Privacy Policy — ForgeLLM",
-        "heading": "Privacy Policy",
-        "subheading": "How ForgeLLM handles your data.",
-        "desc": "ForgeLLM is supported by text ads. We use prompts, messages, code, files, and repository data to provide the service. Where required by law, we provide advertising choices and honor recognized opt-out signals. See our full Privacy Policy for retention and details.",
-    },
-    "terms.html": {
-        "title": "Terms of Service — ForgeLLM",
-        "heading": "Terms of Service",
-        "subheading": "Terms for using ForgeLLM.",
-        "desc": "By using ForgeLLM, you agree to our Terms of Service. These terms govern your use of the ForgeLLM CLI, web interface, and related services. Full terms coming soon.",
-    },
+    'comparisons': ('Comparisons', 'See how ForgeLLM stacks up against paid coding agents.'),
+    'guides': ('Guides', 'Step-by-step guides for local LLMs, Ollama, and ForgeLLM.'),
+    'community': ('Community', 'Join the ForgeLLM community on Telegram and GitHub.'),
+    'research': ('Research', 'Read about the open-source models powering ForgeLLM.'),
+    'engineering': ('Engineering', 'How ForgeLLM is built for speed, privacy, and local AI.'),
+    'launches': ('Launches', 'New releases, betas, and what is coming next.'),
 }
 
-
-def make_main(meta):
-    return f"""<main class="relative z-10 min-h-screen px-6 pt-32 pb-24 md:pt-40">
-  <div class="mx-auto max-w-4xl text-center">
-    <h1 class="lp-hero-heading text-balance text-[34px] font-normal leading-[1.1] text-white md:text-[52px] lg:text-[58px]">{meta["heading"]}</h1>
-    <p class="mt-4 max-w-2xl mx-auto text-lg text-white/55 md:text-xl">{meta["subheading"]}</p>
-    <p class="mt-8 max-w-2xl mx-auto text-base leading-relaxed text-white/45">{meta["desc"]}</p>
-    <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
-      <a href="/" class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-2.5 text-sm font-normal text-black transition-all hover:bg-white/90">Back home</a>
-      <a href="/cli" class="inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-6 py-2.5 text-sm font-normal text-white transition-all hover:bg-white/[0.06]">Try the CLI</a>
-    </div>
+TEMPLATE = '''<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#0a0a0b"/>
+<title>{title} — ForgeLLM</title>
+<meta name="description" content="{description}"/>
+<link rel="icon" type="image/png" href="/logo-icon.png"/>
+<link rel="apple-touch-icon" href="/logo-icon.png"/>
+<link rel="stylesheet" href="/styles.css"/>
+<style>
+body {{ background:#000; color:#fff; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height:100vh; display:flex; flex-direction:column; }}
+header {{ border-bottom:1px solid rgba(255,255,255,0.06); background:#0a0a0b; }}
+main {{ flex:1; display:flex; align-items:center; justify-content:center; padding:2rem; text-align:center; }}
+.card {{ max-width:520px; border:1px solid rgba(255,255,255,0.10); background:rgba(255,255,255,0.03); border-radius:20px; padding:2rem; }}
+h1 {{ font-size:1.75rem; font-weight:500; margin-bottom:0.75rem; }}
+p {{ color:rgba(255,255,255,0.55); line-height:1.6; }}
+.btn {{ display:inline-flex; align-items:center; gap:0.5rem; margin-top:1.5rem; padding:0.6rem 1.2rem; border-radius:9999px; background:#fff; color:#000; font-weight:500; text-decoration:none; transition:opacity 0.2s; }}
+.btn:hover {{ opacity:0.85; }}
+footer {{ border-top:1px solid rgba(255,255,255,0.06); padding:1.25rem 1.5rem; text-align:center; font-size:0.8rem; color:rgba(255,255,255,0.35); }}
+</style>
+</head>
+<body>
+<header class="px-6 py-4">
+  <a href="/" class="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
+    <img src="/logo-icon.png" alt="ForgeLLM" class="h-7 w-7 rounded-[5px]"/>
+    <span class="font-medium">forgellm</span>
+  </a>
+</header>
+<main>
+  <div class="card">
+    <h1>{title}</h1>
+    <p>{description}</p>
+    <a href="/" class="btn">Back to home</a>
   </div>
-</main>"""
+</main>
+<footer>© 2026 ForgeLLM. All rights reserved.</footer>
+</body>
+</html>'''
 
-
-def update_title(html, title):
-    return re.sub(r"<title>[^<]+</title>", f"<title>{title}</title>", html)
-
-
-def remove_hero_only_markup(html):
-    # Remove the first <main> section from index.html (the hero) so we can insert our own main.
-    # We do this by keeping the header and footer, and replacing the content between </header> and the footer section.
-    pattern = r"(</header>)(.*?)(<section[^>]*class=\"relative overflow-hidden bg-black\">)"
-    return re.sub(pattern, r"\1{placeholder}\3", html, flags=re.DOTALL)
-
-
-def main():
-    for filename, meta in PAGES.items():
-        html = update_title(index_html, meta["title"])
-        main_content = make_main(meta)
-        # Replace content between </header> and the footer section
-        page_html = re.sub(
-            r"(</header>)(.*?)(<section[^>]*class=\"relative overflow-hidden bg-black\">)",
-            lambda m: f"{m.group(1)}{main_content}{m.group(3)}",
-            html,
-            flags=re.DOTALL,
-        )
-        (SRC / filename).write_text(page_html, encoding="utf-8")
-        print(f"Generated {SRC / filename}")
-
-
-if __name__ == "__main__":
-    main()
+for slug, (title, description) in PAGES.items():
+    path = os.path.join(SRC, f'{slug}.html')
+    with open(path, 'w', encoding='utf-8') as f:
+        f.write(TEMPLATE.format(title=title, description=description))
+    print('Generated', path)
