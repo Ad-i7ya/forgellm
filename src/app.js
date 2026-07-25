@@ -106,7 +106,7 @@
 
   /* ─── Pricing bars grow into view ────────────────────────────────── */
   function initPricingBars() {
-    const bars = document.querySelectorAll('[style*="width:0px"], [style*="width: 0px"], [style*="width:0%"], [style*="width: 0%"]');
+    const bars = document.querySelectorAll('.lp-pricing-bar');
     if (!bars.length) return;
 
     const observer = new IntersectionObserver((entries) => {
@@ -236,7 +236,7 @@
 
   /* ─── FAQ accordion ──────────────────────────────────────────────── */
   function initFAQs() {
-    document.querySelectorAll('.faq-trigger, .faq-item > button, .group.flex.w-full.items-center').forEach(trigger => {
+    document.querySelectorAll('.faq-trigger, .faq-item > button').forEach(trigger => {
       if (trigger.dataset.faqBound) return;
       trigger.dataset.faqBound = '1';
       trigger.addEventListener('click', () => {
