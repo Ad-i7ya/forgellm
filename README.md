@@ -4,7 +4,7 @@
 
 ForgeLLM is a completely free, open-source coding assistant that connects to your own Ollama models. Use it via **CLI** in your terminal or through the **Web** interface — no subscriptions, no API keys, no lock-in.
 
-[![GitHub stars](https://img.shields.io/github/stars/Ad-i7ya/forgellm?style=social)](https://github.com/Ad-i7ya/forgellm)
+[![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/forgellm?style=social)](https://github.com/YOUR_USERNAME/forgellm)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
@@ -94,7 +94,7 @@ ForgeLLM defaults to **nemotron-3-super:latest**. You can switch to any other mo
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/Ad-i7ya/forgellm.git
+   git clone https://github.com/YOUR_USERNAME/forgellm.git
    cd forgellm
    ```
 

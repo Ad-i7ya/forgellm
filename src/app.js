@@ -339,6 +339,61 @@
     });
   }
 
+  /* ─── Hero terminal model cycling ────────────────────────────────── */
+  function initHeroModelCycle() {
+    const slot = document.querySelector('[data-hero-model-slot]');
+    if (!slot) return;
+
+    const FALLBACK_MODELS = [
+      'nemotron-3-super',
+      'deepseek-r1:70b',
+      'deepseek-coder-v2',
+      'llama3.1:70b',
+      'gemma4:26b',
+      'gpt-oss:20b',
+      'hermes3'
+    ];
+
+    function buildItem(name) {
+      const el = document.createElement('span');
+      el.className = 'lp-hero-models__item';
+      el.innerHTML = '<span class="lp-hero-models__name">' + name.replace(/</g, '&lt;') + '</span>';
+      return el;
+    }
+
+    function setModels(names) {
+      // keep the currently visible first item so the first transition is clean
+      slot.innerHTML = '';
+      names.slice(0, 12).forEach(name => slot.appendChild(buildItem(name)));
+      const items = Array.from(slot.children);
+      if (!items.length) return;
+      items.forEach((it, i) => { if (i !== 0) it.classList.remove('is-active'); });
+      items[0].classList.add('is-active');
+
+      let index = 0;
+      const interval = Math.max(3000, 2400); // slow, official-feeling cadence
+      setInterval(() => {
+        const current = items[index];
+        index = (index + 1) % items.length;
+        const next = items[index];
+        if (current) current.classList.remove('is-active');
+        if (next) next.classList.add('is-active');
+      }, interval);
+    }
+
+    fetch('/api/tags', { signal: AbortSignal.timeout(5000) })
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('tags failed')))
+      .then(data => {
+        const models = (data.models || []).map(m => m.name).filter(Boolean);
+        if (models.length) {
+          setModels(models);
+        } else {
+          setModels(FALLBACK_MODELS);
+        }
+      })
+      .catch(() => setModels(FALLBACK_MODELS));
+  }
+
   /* ─── Init ───────────────────────────────────────────────────────── */
   whenReady(() => {
     initHeroReveal();
@@ -353,5 +408,6 @@
     initMobileMenu();
     initHeroTabs();
     initExpandables();
+    initHeroModelCycle();
   });
 })();

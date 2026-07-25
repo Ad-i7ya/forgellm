@@ -9,9 +9,9 @@ REPLACEMENTS = {
     'Freebuff Cloud': 'ForgeLLM Cloud',
     'Freebuff': 'ForgeLLM',
     'freebuff': 'forgellm',
-    'CodebuffAI/codebuff': 'Ad-i7ya/forgellm',
-    'https://codebuff.com': 'https://forgellm.adi7ya.workers.dev',
-    'https://freebuff.com': 'https://forgellm.adi7ya.workers.dev',
+    'CodebuffAI/codebuff': 'YOUR_USERNAME/forgellm',
+    'https://codebuff.com': 'https://forgellm.workers.dev',
+    'https://freebuff.com': 'https://forgellm.workers.dev',
     'npm i -g freebuff': 'npm install -g forgellm',
     'npm install -g freebuff': 'npm install -g forgellm',
     'freebuff --': 'forgellm --',
@@ -50,7 +50,7 @@ def process(name: str, out_name: str, title_replace=None):
 <title>{title_replace or 'ForgeLLM — the free coding agent'}</title>
 <meta name="description" content="ForgeLLM is the free coding agent: a free CLI, Web builder, and Chat powered by your own Ollama models. No subscription, no API keys."/>
 <meta name="robots" content="index, follow"/>
-<link rel="canonical" href="https://forgellm.adi7ya.workers.dev/{canonical}"/>
+<link rel="canonical" href="https://forgellm.workers.dev/{canonical}"/>
 <link rel="shortcut icon" href="/favicon/favicon-16x16.ico"/>
 <link rel="icon" href="/favicon/favicon-32x32.ico"/>
 <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png"/>

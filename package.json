@@ -18,7 +18,7 @@
     "cloudflare",
     "workers"
   ],
-  "author": "Aditya (github.com/Ad-i7ya)",
+  "author": "ForgeLLM Team (github.com/YOUR_USERNAME)",
   "license": "MIT",
   "devDependencies": {
     "wrangler": "^4.0.0"
