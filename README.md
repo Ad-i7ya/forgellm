@@ -1,25 +1,32 @@
-# ForgeLLM ⚒️
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=0:000000,50:1a1a2e,100:6366f1&height=220&section=header&text=ForgeLLM&fontSize=60&fontColor=ffffff&animation=fadeIn" width="100%" alt="ForgeLLM Banner"/>
+</p>
 
-**The free coding agent that runs on your infrastructure.**
+<p align="center">
+  <b>The free coding agent that runs on your infrastructure.</b><br>
+  No subscriptions, no API keys, no lock-in.
+</p>
 
-ForgeLLM is a completely free, open-source coding assistant that connects to your own Ollama models. Use it via **CLI** in your terminal or through the **Web** interface — no subscriptions, no API keys, no lock-in.
+<p align="center">
+  <a href="https://github.com/Ad-i7ya/forgellm/stargazers">
+    <img src="https://img.shields.io/github/stars/Ad-i7ya/forgellm?style=for-the-badge" alt="GitHub Stars"/>
+  </a>
+  <a href="https://github.com/Ad-i7ya/forgellm/fork">
+    <img src="https://img.shields.io/github/forks/Ad-i7ya/forgellm?style=for-the-badge" alt="GitHub Forks"/>
+  </a>
+  <img src="https://img.shields.io/github/license/Ad-i7ya/forgellm?style=for-the-badge" alt="License"/>
+  <img src="https://img.shields.io/github/last-commit/Ad-i7ya/forgellm?style=for-the-badge" alt="Last Commit"/>
+</p>
 
-[![GitHub stars](https://img.shields.io/github/stars/YOUR_USERNAME/forgellm?style=social)](https://github.com/YOUR_USERNAME/forgellm)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js"/>
+  <img src="https://img.shields.io/badge/Cloudflare-Workers-F38020?style=for-the-badge&logo=cloudflare&logoColor=white" alt="Cloudflare Workers"/>
+  <img src="https://img.shields.io/badge/Ollama-Self--hosted-000000?style=for-the-badge&logo=ollama&logoColor=white" alt="Ollama"/>
+</p>
 
 ---
 
-## We make coding 100% free
-
-No subscriptions, no API keys. The best open-source models.
-
-```bash
-npm install -g forgellm
-```
-
----
-
-## Features
+## ✨ Features
 
 - **🧠 Your models, your infra** — Runs on Ollama. Deploy any open-source model on your VPS.
 - **🖥️ CLI & Web** — Code from the terminal with `forgellm` or use the web interface.
@@ -29,7 +36,28 @@ npm install -g forgellm
 - **🌐 Cloudflare Workers** — Serves the web UI globally with low latency.
 - **🚀 One-command deploy** — `wrangler deploy` pushes the worker and static assets.
 
-## Quick Start
+---
+
+## 🚀 Live Demo
+
+The web interface is deployed at:
+
+**👉 [https://forgellm.adi7ya.workers.dev](https://forgellm.adi7ya.workers.dev)**
+
+Available routes:
+
+| Route | Description |
+|-------|-------------|
+| `/` | Home landing page |
+| `/cli` | CLI landing page & install guide |
+| `/web` | Web app builder interface |
+| `/chat` | Chat with your Ollama models |
+| `/desktop` | Desktop app (beta) |
+| `/cloud` | Cloud offering (beta) |
+
+---
+
+## 🛠️ Quick Start
 
 ### 1. Start your Ollama server
 
@@ -53,35 +81,9 @@ forgellm
 
 That's it. No API keys, no accounts.
 
-## Web Interface
+---
 
-ForgeLLM also ships with a web UI served via Cloudflare Workers:
-
-- **`/`** — CLI landing page
-- **`/cli`** — CLI landing page with install guide
-- **`/web`** — Web app builder interface
-- **`/chat`** — Direct chat with your Ollama models
-
-## Default Model
-
-ForgeLLM defaults to **nemotron-3-super:latest**. You can switch to any other model installed on your Ollama instance:
-
-- In the web chat, use the model selector in the header.
-- In the CLI, use `/models` to list and `/model <name>` to switch.
-
-## Architecture
-
-```
-┌──────────────┐    ┌──────────────┐    ┌──────────────┐
-│   Browser    │───▶│  Cloudflare  │───▶│   Ollama     │
-│  (Web UI)    │    │   Worker     │    │   (Your VPS) │
-└──────────────┘    └──────────────┘    └──────────────┘
-       │                                       │
-       │  Terminal                             │
-       │  (CLI) ───────────────────────────────┘
-```
-
-## Deploy Your Own
+## 📦 Deploy Your Own
 
 ### Prerequisites
 
@@ -93,28 +95,43 @@ ForgeLLM defaults to **nemotron-3-super:latest**. You can switch to any other mo
 ### Setup
 
 1. **Clone the repo**
+
    ```bash
-   git clone https://github.com/YOUR_USERNAME/forgellm.git
+   git clone https://github.com/Ad-i7ya/forgellm.git
    cd forgellm
    ```
 
-2. **Configure Ollama host**
+2. **Install dependencies**
+
    ```bash
-   # Edit wrangler.toml and set OLLAMA_HOST to your Ollama URL
+   npm install
    ```
 
-3. **Deploy**
+3. **Configure Ollama host**
+
+   Edit `wrangler.toml` and set `OLLAMA_HOST` to your Ollama URL:
+
+   ```toml
+   [vars]
+   OLLAMA_HOST = "https://your-ollama-tunnel.trycloudflare.com"
+   ```
+
+4. **Deploy**
+
    ```bash
    npm run deploy
    ```
 
-4. **Set up tunnel (optional, for remote Ollama)**
+5. **Set up tunnel (optional, for remote Ollama)**
+
    ```bash
    cloudflared tunnel create forgellm
    cloudflared tunnel route dns forgellm ollama.your-domain.com
    ```
 
-## CLI Commands
+---
+
+## ⌨️ CLI Commands
 
 | Command | Description |
 |---------|-------------|
@@ -127,28 +144,37 @@ ForgeLLM defaults to **nemotron-3-super:latest**. You can switch to any other mo
 | `/clear` | Clear screen |
 | `/exit` | Quit |
 
-## Tech Stack
+---
 
-- **Frontend:** Vanilla HTML/CSS/JS (no frameworks)
+## 🏗️ Architecture
+
+```
+┌──────────────┐    ┌──────────────┐    ┌──────────────┐
+│   Browser    │───▶│  Cloudflare  │───▶│   Ollama     │
+│  (Web UI)    │    │   Worker     │    │   (Your VPS) │
+└──────────────┘    └──────────────┘    └──────────────┘
+       │                                       │
+       │  Terminal                             │
+       │  (CLI) ───────────────────────────────┘
+```
+
+---
+
+##  Tech Stack
+
+- **Frontend:** Vanilla HTML/CSS/JS
 - **Backend:** Cloudflare Workers
 - **AI:** Ollama (self-hosted)
 - **Default model:** nemotron-3-super:latest
 - **Tunnel:** Cloudflare Tunnel (optional)
 - **CLI:** Node.js + readline
 
-## Configuration
+---
 
-All configuration is in `wrangler.toml`:
-
-```toml
-[vars]
-OLLAMA_HOST = "https://your-ollama-tunnel.trycloudflare.com"
-```
-
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Fork the repo, make your changes, and submit a PR.
 
-## License
+## 📄 License
 
-MIT
+[MIT](https://opensource.org/licenses/MIT)

@@ -23,16 +23,16 @@
     "assistant",
     "llm"
   ],
-  "author": "ForgeLLM Team (github.com/YOUR_USERNAME)",
+  "author": "ForgeLLM Team (github.com/Ad-i7ya)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YOUR_USERNAME/forgellm.git"
+    "url": "git+https://github.com/Ad-i7ya/forgellm.git"
   },
   "bugs": {
-    "url": "https://github.com/YOUR_USERNAME/forgellm/issues"
+    "url": "https://github.com/Ad-i7ya/forgellm/issues"
   },
-  "homepage": "https://github.com/YOUR_USERNAME/forgellm#readme",
+  "homepage": "https://github.com/Ad-i7ya/forgellm#readme",
   "dependencies": {
     "chalk": "^5.3.0"
   }

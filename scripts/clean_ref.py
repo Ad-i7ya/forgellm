@@ -9,7 +9,7 @@ REPLACEMENTS = {
     'Freebuff Cloud': 'ForgeLLM Cloud',
     'Freebuff': 'ForgeLLM',
     'freebuff': 'forgellm',
-    'CodebuffAI/codebuff': 'YOUR_USERNAME/forgellm',
+    'CodebuffAI/codebuff': 'Ad-i7ya/forgellm',
     'https://codebuff.com': 'https://forgellm.workers.dev',
     'https://freebuff.com': 'https://forgellm.workers.dev',
     'npm i -g freebuff': 'npm install -g forgellm',
