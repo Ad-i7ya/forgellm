@@ -84,21 +84,27 @@
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           const el = entry.target;
-          el.style.transition = `opacity 0.85s ${CUBIC_OUT}, transform 0.85s ${CUBIC_OUT}`;
-          el.style.opacity = '1';
-          if (/translateY\s*\(/i.test(el.style.transform || '')) {
-            el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/gi, 'translateY(0)');
-          } else if (!el.style.transform || el.style.transform === 'none') {
-            el.style.transform = 'translateY(0)';
+          // Use the dedicated reveal class if present, otherwise inline styles.
+          if (el.classList.contains('lp-reveal')) {
+            el.classList.add('is-revealed');
+          } else {
+            el.style.transition = `opacity 0.85s ${CUBIC_OUT}, transform 0.85s ${CUBIC_OUT}`;
+            el.style.opacity = '1';
+            if (/translateY\s*\(/i.test(el.style.transform || '')) {
+              el.style.transform = el.style.transform.replace(/translateY\([^)]+\)/gi, 'translateY(0)');
+            } else if (!el.style.transform || el.style.transform === 'none') {
+              el.style.transform = 'translateY(0)';
+            }
           }
           observer.unobserve(el);
         }
       });
     }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
 
-    // Observe non-hero elements with hidden inline styles.
+    // Observe non-hero elements with hidden inline styles or reveal classes.
     const hero = document.querySelector('main > section:first-of-type');
-    document.querySelectorAll('[style*="opacity:0"], [style*="opacity: 0"]').forEach(el => {
+    const revealsSelectors = '[style*="opacity:0"], [style*="opacity: 0"], .lp-reveal';
+    document.querySelectorAll(revealsSelectors).forEach(el => {
       if (hero && hero.contains(el)) return; // skip hero, handled separately
       observer.observe(el);
     });
